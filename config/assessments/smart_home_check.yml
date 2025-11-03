@@ -1,0 +1,53 @@
+title: "Smart Home Check"
+slug: "smart-home-check"
+hook: "Ist Ihr Zuhause bereit für ein Smart Home?"
+theme:
+  colors:
+    primary: "#4A6B52"
+    accent: "#F1B722"
+questions:
+  - id: "wifi"
+    text: "Haben Sie WLAN in allen Räumen?"
+    options:
+      - text: "Ja"
+        tag: wifi_ok
+        score: 2
+      - text: "Nein"
+        tag: wifi_bad
+        score: 0
+  - id: "housing"
+    text: "Besitzen Sie ein Einfamilienhaus?"
+    options:
+      - text: "Ja"
+        tag: house
+        score: 2
+      - text: "Nein"
+        tag: apartment
+        score: 1
+  - id: "budget"
+    text: "Wie hoch ist Ihr Budget für Smart-Home-Aufrüstung?"
+    options:
+      - text: "Unter 1.000 €"
+        tag: budget_low
+        score: 1
+      - text: "1.000 € – 3.000 €"
+        tag: budget_mid
+        score: 2
+      - text: "Über 3.000 €"
+        tag: budget_high
+        score: 3
+result_rules:
+  - tags:
+      - wifi_ok
+      - house
+      - budget_high
+    text: "Perfekt! Ihr Zuhause ist bereit für ein Premium-Smart-Home-Upgrade."
+  - tags:
+      - wifi_ok
+      - budget_mid
+    text: "Gute Basis vorhanden. Wir empfehlen einen fokussierten Ausbau auf Sicherheit und Komfort."
+  - any_tags:
+      - wifi_bad
+    text: "Verbessern Sie zuerst Ihr WLAN, um Smart-Home-Funktionen nutzen zu können."
+  - fallback: true
+    text: "Danke für Ihr Interesse. Wir helfen Ihnen gern bei den nächsten Smart-Home-Schritten."

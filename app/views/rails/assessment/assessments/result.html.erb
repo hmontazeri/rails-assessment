@@ -1,0 +1,18 @@
+<% content_for :title do %>
+  <%= @definition.title %> – Ergebnis
+<% end %>
+
+<section class="assessment-result">
+  <header class="result-header">
+    <h1 class="result-title">Ihr Ergebnis</h1>
+    <p class="result-subtitle"><%= @definition.title %></p>
+  </header>
+
+  <article class="result-body">
+    <p class="result-text"><%= (@result_rule&.text || @response.result).to_s %></p>
+  </article>
+
+  <footer class="result-footer">
+    <%= link_to "Assessment erneut starten", assessment_path(@definition.slug), class: "btn btn-secondary" %>
+  </footer>
+</section>

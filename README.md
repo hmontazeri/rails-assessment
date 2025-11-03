@@ -1,28 +1,155 @@
-# Rails::Assessment
-Short description and motivation.
+# Rails Assessment Engine
 
-## Usage
-How to use my plugin.
+`rails-assessment` is a mountable Rails 8 engine that lets you ship dynamic, themeable assessments without building CRUD back offices. Define questionnaires in YAML or a Ruby DSL, persist JSONB responses, and deliver a Hotwire-powered multi-step flow that can be embedded in any Rails application.
 
-## Installation
-Add this line to your application's Gemfile:
+## Highlights
+
+- **Declarative definitions** — load assessments from YAML files or a compact Ruby DSL.
+- **Conditional logic** — evaluate answer tags against ordered rules to produce tailored results.
+- **Persistence built-in** — stores submissions in a single `rails_assessment_responses` table (JSONB answers + result text).
+- **Hotwire UI** — Turbo Frames + a Stimulus controller provide a progressive multi-step experience with graceful no-JS fallback.
+- **Theme system** — inject CSS tokens per assessment, resolve themes via initializer, params, or request proc.
+
+## Getting Started
+
+1. Add the gem to your host app (or use it as an engines workspace dependency):
+   ```ruby
+   gem "rails-assessment", path: "path/to/rails-assessment"
+   ```
+2. Mount the engine in `config/routes.rb`:
+   ```ruby
+   Rails.application.routes.draw do
+     mount Rails::Assessment::Engine => "/assessments"
+   end
+   ```
+3. Install the migration and run it:
+   ```bash
+   bin/rails railties:install:migrations
+   bin/rails db:migrate
+   ```
+4. Create `config/initializers/rails_assessment.rb` (see example below) and drop YAML files into `config/assessments/`.
+5. Import the Stimulus controller so Hotwire can register it (Importmap example):
+   ```javascript
+   // app/javascript/controllers/index.js
+   import AssessmentController from "rails-assessment/assessment_controller"
+   application.register("assessment", AssessmentController)
+   ```
+6. Visit `http://localhost:3000/assessments/<slug>` to see the assessment in action.
+
+## Configuration
+
+The engine ships with a configuration object accessible via `Rails::Assessment.configure`.
 
 ```ruby
-gem "rails-assessment"
+# config/initializers/rails_assessment.rb
+Rails::Assessment.configure do |config|
+  config.assessments_paths = [Rails.root.join("config", "assessments")]
+  config.theme_strategy = :param
+  config.theme_param_key = :theme
+
+  config.theme = {
+    colors: {
+      primary: "#2563EB",
+      neutral: { 50 => "#F8FAFC", 900 => "#0F172A" }
+    },
+    typography: {
+      font_sans: "'Inter', system-ui, sans-serif",
+      heading: :sans,
+      body: :sans
+    }
+  }
+
+  config.themes = {
+    "forest" => { colors: { primary: "#4A6B52" } }
+  }
+
+  config.fallback_result_text = "Thanks for completing the assessment."
+end
 ```
 
-And then execute:
+- `theme_strategy`: `:initializer`, `:param`, or `:proc`.
+- `assessments_paths`: directories scanned for `.yml` and `.rb` definitions.
+- `fallback_result_text`: used when no rule matches and no fallback is present.
+
+At runtime you can access theme tokens in views with `tkn("colors.primary")` or render flattened CSS variables with `assessment_css_variables`.
+
+## Defining Assessments
+
+### YAML
+
+Create files in `config/assessments/*.yml`:
+
+```yaml
+title: "Smart Home Check"
+slug: "smart-home-check"
+hook: "Ist Ihr Zuhause bereit für ein Smart Home?"
+questions:
+  - text: "Haben Sie WLAN in allen Räumen?"
+    options:
+      - text: "Ja"
+        tag: wifi_ok
+        score: 2
+      - text: "Nein"
+        tag: wifi_bad
+        score: 0
+result_rules:
+  - tags: [wifi_ok]
+    text: "Perfekt!"
+  - fallback: true
+    text: "Wir melden uns mit Empfehlungen."
+```
+
+### Ruby DSL
+
+```ruby
+Rails::Assessment.define "smart-home" do
+  title "Smart Home Check"
+  hook "Ist Ihr Zuhause bereit für ein Smart Home?"
+
+  question "Haben Sie WLAN in allen Räumen?" do
+    option "Ja", tag: :wifi_ok, score: 2
+    option "Nein", tag: :wifi_bad
+  end
+
+  result_rule "Perfekt!" do
+    tags :wifi_ok
+  end
+
+  fallback "Wir melden uns mit Empfehlungen."
+end
+```
+
+The loader watches these files in development (no caching) and reloads automatically on request.
+
+## Rendering & Flow
+
+- `GET /assessments/:slug` renders the multi-step form.
+- Submission posts to `/assessments/:slug/response` (local form, Turbo friendly).
+- Successful submissions redirect to `/assessments/:slug/result?response_id=...`.
+- Responses are stored in `Rails::Assessment::Response` with aggregated tags and score helpers.
+
+The Stimulus controller manages step transitions, validates required steps, and keeps a progress bar in sync. Without JavaScript the form gracefully falls back to a stacked layout via CSS.
+
+## Logic Engine
+
+`Rails::Assessment::LogicEngine.evaluate(tags, rules, score: nil)` walks ordered rules and returns the first match. Rules support:
+
+- `tags` / `all_tags` — all tags must be present.
+- `any_tags` — at least one tag must match.
+- `exclude_tags` — block rules when tags intersect.
+- `score_at_least` / `score_at_most` — numeric guards.
+- `fallback` — designated catch-all rule.
+
+## Testing
+
+The engine ships with Minitest coverage for the logic engine, YAML/Ruby loaders, response builder, and configuration. Run the suite from the engine root:
+
 ```bash
-$ bundle
+bundle exec rake test
 ```
 
-Or install it yourself as:
-```bash
-$ gem install rails-assessment
-```
-
-## Contributing
-Contribution directions go here.
+> **Heads-up:** The dummy app depends on `puma`. Ensure it is available in your environment before running the test task.
 
 ## License
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+Released under the MIT License. See `MIT-LICENSE` for details.

@@ -1,0 +1,69 @@
+<% content_for :title do %>
+  <%= @definition.title %>
+<% end %>
+
+<section class="assessment" data-controller="assessment" data-assessment-total-value="<%= @definition.questions.size %>">
+  <header class="assessment-header">
+    <p class="assessment-eyebrow"><%= @definition.hook %></p>
+    <h1 class="assessment-title"><%= @definition.title %></h1>
+  </header>
+
+  <%= form_with url: assessment_response_path(@definition.slug), method: :post, class: "assessment-form", local: true do |form| %>
+    <div class="assessment-progress">
+      <div class="assessment-progress-bar" data-assessment-target="progress"></div>
+    </div>
+
+    <div class="assessment-steps" data-assessment-target="steps">
+      <% @definition.questions.each_with_index do |question, index| %>
+        <turbo-frame id="question_<%= question.id %>"
+                     class="assessment-step <%= 'is-active' if index.zero? %>"
+                     data-assessment-target="step"
+                     data-step-index="<%= index %>"
+                     data-required="<%= question.required? %>"
+                     data-multi="<%= question.allow_multiple? %>">
+          <div class="assessment-question">
+            <p class="question-text"><%= question.text %></p>
+            <% if question.help_text.present? %>
+              <p class="question-help"><%= question.help_text %></p>
+            <% end %>
+
+            <div class="question-options" role="group">
+              <% question.options.each do |option| %>
+                <% input_name = question.allow_multiple? ? "response[#{question.id}][]" : "response[#{question.id}]" %>
+                <% input_type = question.allow_multiple? ? "checkbox" : "radio" %>
+                <label class="question-option">
+                  <input type="<%= input_type %>"
+                         name="<%= input_name %>"
+                         value="<%= option.id %>"
+                         data-action="change->assessment#markAnswered"
+                         <%= 'required' if question.required? && !question.allow_multiple? %> />
+                  <span class="option-label"><%= option.text %></span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+        </turbo-frame>
+      <% end %>
+    </div>
+
+    <div class="assessment-navigation">
+      <button type="button"
+              class="btn btn-secondary"
+              data-action="assessment#previous"
+              data-assessment-target="backButton">
+        Zurück
+      </button>
+
+      <button type="button"
+              class="btn btn-primary"
+              data-action="assessment#next"
+              data-assessment-target="nextButton">
+        Weiter
+      </button>
+
+      <%= form.submit "Assessment abschließen",
+                      class: "btn btn-submit",
+                      data: { assessment_target: "submitButton", action: "assessment#submit" } %>
+    </div>
+  <% end %>
+</section>
