@@ -1,6 +1,10 @@
 en:
   rails:
     assessment:
+      start:
+        button: "Start Assessment"
+        question_one: "Question"
+        question_other: "Questions"
       result:
         greeting: "Hello %{name}!"
         default_headline: "Your Result"
@@ -13,3 +17,7 @@ en:
         name_label: "Your Name"
         email_label: "Your Email"
         almost_done: "Almost done! To get your personalized result:"
+      navigation:
+        back: "Back"
+        next: "Next"
+        submit: "Complete Assessment"

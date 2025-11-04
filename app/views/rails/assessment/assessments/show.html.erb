@@ -26,7 +26,7 @@
       <button type="button"
               class="btn btn-primary btn-start"
               data-action="assessment#start">
-        Start Assessment
+        <%= t('rails.assessment.start.button') %>
       </button>
 
       <% if @definition.estimated_time.present? || @definition.show_question_count %>
@@ -35,7 +35,7 @@
             <span class="assessment-start-meta-item"><%= @definition.estimated_time %></span>
           <% end %>
           <% if @definition.show_question_count %>
-            <span class="assessment-start-meta-item"><%= @definition.questions.size %> <%= @definition.questions.size == 1 ? 'Question' : 'Questions' %></span>
+            <span class="assessment-start-meta-item"><%= @definition.questions.size %> <%= t('rails.assessment.start.question', count: @definition.questions.size) %></span>
           <% end %>
         </div>
       <% end %>
@@ -131,17 +131,17 @@
               class="btn btn-secondary"
               data-action="assessment#previous"
               data-assessment-target="backButton">
-        Zurück
+        <%= t('rails.assessment.navigation.back') %>
       </button>
 
       <button type="button"
               class="btn btn-primary"
               data-action="assessment#next"
               data-assessment-target="nextButton">
-        Weiter
+        <%= t('rails.assessment.navigation.next') %>
       </button>
 
-      <%= form.submit "Assessment abschließen",
+      <%= form.submit t('rails.assessment.navigation.submit'),
                       class: "btn btn-submit",
                       data: { assessment_target: "submitButton", action: "assessment#submit" } %>
     </div>

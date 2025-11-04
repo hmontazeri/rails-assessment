@@ -7,7 +7,7 @@
 <% insights = result_payload(@result_rule, :insights, []) %>
 <% educational_content = result_payload(@result_rule, :educational_content, []) %>
 <% score_message = result_payload(@result_rule, :score_message, nil) %>
-<% cta_text = result_payload(@result_rule, :cta_text, "Assessment erneut starten") %>
+<% cta_text = result_payload(@result_rule, :cta_text, t('rails.assessment.result.restart_button')) %>
 
 <section class="assessment-result">
   <% if @definition.logo.present? %>
