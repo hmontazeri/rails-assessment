@@ -5,6 +5,12 @@ module Rails
   module Assessment
     module ApplicationHelper
       include Rails::Assessment::Engine.routes.url_helpers
+
+      # Provide default URL options for route helpers
+      def default_url_options
+        {}
+      end
+
       # Safely access nested payload data from a result rule
       # @param result_rule [ResultRule] the result rule object
       # @param key [String, Symbol] the payload key to access
@@ -21,7 +27,7 @@ module Rails
       # @param response [Response] response object with UUID
       # @return [String] final CTA URL to use
       def result_cta_url(raw_url, slug, response)
-        fallback_url = assessment_path(slug)
+        fallback_url = Rails::Assessment::Engine.routes.url_helpers.assessment_path(slug)
         return fallback_url if raw_url.blank?
         return raw_url if response.nil? || response.uuid.blank?
 
