@@ -7,12 +7,15 @@
     "Segoe UI",
     sans-serif
   );
-  --assessment-color-primary: var(--assessment-colors-primary, #2563EB);
-  --assessment-color-neutral-50: var(--assessment-colors-neutral-50, #F8FAFC);
-  --assessment-color-neutral-900: var(--assessment-colors-neutral-900, #0F172A);
+  --assessment-color-primary: var(--assessment-colors-primary, #2563eb);
+  --assessment-color-neutral-50: var(--assessment-colors-neutral-50, #f8fafc);
+  --assessment-color-neutral-900: var(--assessment-colors-neutral-900, #0f172a);
   --assessment-radius-lg: var(--assessment-radius-lg, 1rem);
   --assessment-radius-sm: var(--assessment-radius-sm, 0.5rem);
-  --assessment-shadow-card: var(--assessment-shadow-card, 0 20px 45px rgba(15, 23, 42, 0.12));
+  --assessment-shadow-card: var(
+    --assessment-shadow-card,
+    0 20px 45px rgba(15, 23, 42, 0.12)
+  );
 }
 
 .rails-assessment-body {
@@ -24,7 +27,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1.5rem;
 }
 
 .rails-assessment-wrapper {
@@ -188,7 +190,11 @@
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, var(--assessment-color-primary), rgba(37, 99, 235, 0.8));
+  background: linear-gradient(
+    135deg,
+    var(--assessment-color-primary),
+    rgba(37, 99, 235, 0.8)
+  );
   color: #fff;
 }
 
@@ -251,7 +257,8 @@
 }
 
 @keyframes shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
   25% {
