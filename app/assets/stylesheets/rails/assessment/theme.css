@@ -364,11 +364,15 @@
 }
 
 .assessment-start-screen {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 2rem;
   align-items: center;
   text-align: center;
+}
+
+.assessment-start-screen.is-active {
+  display: flex;
   animation: fadeIn 0.4s ease;
 }
 
@@ -397,28 +401,22 @@
 .assessment-start-info-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   padding: 1rem 1.5rem;
   background: var(--assessment-color-neutral-900-alpha-05);
   border-radius: var(--assessment-radius-sm);
   border: 1px solid var(--assessment-color-neutral-900-alpha-10);
 }
 
-.assessment-start-info-icon {
-  font-size: 1.5rem;
-}
-
 .assessment-start-info-content {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.25rem;
+  width: 100%;
 }
 
 .assessment-start-info-label {
   font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   color: var(--assessment-color-neutral-900-alpha-60);
   font-weight: 600;
 }
@@ -435,27 +433,13 @@
   padding: 1rem 2rem;
 }
 
-.assessment-content.is-hidden {
+.assessment-content {
   display: none;
 }
 
-.fade-out {
-  animation: fadeOut 0.3s ease forwards;
-}
-
-.fade-in {
+.assessment-content.is-active {
+  display: block;
   animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
 }
 
 .assessment-logo {

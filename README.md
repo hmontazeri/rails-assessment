@@ -129,6 +129,7 @@ hook: "Ist Ihr Zuhause bereit für ein Smart Home?"
 description: "Finden Sie in wenigen Fragen heraus, wie gut Ihr Zuhause für Smart-Home-Technologie vorbereitet ist."  # Optional
 show_start_screen: true  # Optional: enables intro screen before first question
 estimated_time: "2-3 Minuten"  # Optional: displayed on start screen
+show_question_count: false  # Optional: set to false to hide question count (default: true)
 logo: "logo.svg"  # Optional: asset path or URL, displays in top right corner
 questions:
   - text: "Haben Sie WLAN in allen Räumen?"
@@ -178,6 +179,7 @@ The loader watches these files in development (no caching) and reloads automatic
 | `description`        | String  | No       | Longer description displayed on the start screen (if enabled).                                  |
 | `show_start_screen`  | Boolean | No       | Enables an intro screen with description, time estimate, and start button. Default: `false`.    |
 | `estimated_time`     | String  | No       | Time estimate displayed on start screen (e.g., "5 minutes", "2-3 Minuten").                     |
+| `show_question_count`| Boolean | No       | Show question count on start screen. Default: `true`.                                           |
 | `logo`               | String  | No       | Asset path (e.g., `"logo.svg"`) or full URL. Displays in top right corner (max 120×60px).       |
 | `questions`          | Array   | Yes      | List of question objects (see below).                                                           |
 | `result_rules`       | Array   | Yes      | Logic rules for determining results.                                                            |
@@ -249,6 +251,7 @@ title: "Product Fit Assessment"
 description: "Answer a few quick questions to see if our product is right for you."
 show_start_screen: true
 estimated_time: "3-5 minutes"
+show_question_count: false  # Hide the question count
 logo: "company-logo.svg"  # or "https://example.com/logo.png" for external URLs
 ```
 
@@ -256,7 +259,7 @@ The start screen displays:
 - Your logo in the top right corner (if provided)
 - Assessment title and hook
 - Description text
-- Info cards showing estimated time and question count
+- Info cards showing estimated time (if provided) and/or question count (if enabled)
 - A prominent "Start Assessment" button
 
 This creates a more professional first impression and sets user expectations before they begin.

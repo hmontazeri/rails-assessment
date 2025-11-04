@@ -11,33 +11,36 @@
   <% end %>
 
   <% if @definition.show_start_screen %>
-    <div class="assessment-start-screen" data-assessment-target="startScreen">
+    <div class="assessment-start-screen is-active" data-assessment-target="startScreen">
       <header class="assessment-start-header">
         <% if @definition.hook.present? %>
           <p class="assessment-eyebrow"><%= @definition.hook %></p>
         <% end %>
         <h1 class="assessment-title"><%= @definition.title %></h1>
-        <% if @definition.description.present? %>
-          <p class="assessment-start-description"><%= @definition.description %></p>
-        <% end %>
       </header>
 
-      <% if @definition.estimated_time.present? %>
+      <% if @definition.description.present? %>
+        <p class="assessment-start-description"><%= @definition.description %></p>
+      <% end %>
+
+      <% if @definition.estimated_time.present? || @definition.show_question_count %>
         <div class="assessment-start-info">
-          <div class="assessment-start-info-item">
-            <span class="assessment-start-info-icon">⏱️</span>
-            <div class="assessment-start-info-content">
-              <span class="assessment-start-info-label">Estimated Time</span>
-              <span class="assessment-start-info-value"><%= @definition.estimated_time %></span>
+          <% if @definition.estimated_time.present? %>
+            <div class="assessment-start-info-item">
+              <div class="assessment-start-info-content">
+                <span class="assessment-start-info-label">Estimated Time</span>
+                <span class="assessment-start-info-value"><%= @definition.estimated_time %></span>
+              </div>
             </div>
-          </div>
-          <div class="assessment-start-info-item">
-            <span class="assessment-start-info-icon">📝</span>
-            <div class="assessment-start-info-content">
-              <span class="assessment-start-info-label">Questions</span>
-              <span class="assessment-start-info-value"><%= @definition.questions.size %></span>
+          <% end %>
+          <% if @definition.show_question_count %>
+            <div class="assessment-start-info-item">
+              <div class="assessment-start-info-content">
+                <span class="assessment-start-info-label">Questions</span>
+                <span class="assessment-start-info-value"><%= @definition.questions.size %></span>
+              </div>
             </div>
-          </div>
+          <% end %>
         </div>
       <% end %>
 
@@ -49,7 +52,7 @@
     </div>
   <% end %>
 
-  <div class="assessment-content <%= 'is-hidden' if @definition.show_start_screen %>" data-assessment-target="content">
+  <div class="assessment-content" data-assessment-target="content">
     <header class="assessment-header">
       <p class="assessment-eyebrow"><%= @definition.hook %></p>
       <h1 class="assessment-title"><%= @definition.title %></h1>

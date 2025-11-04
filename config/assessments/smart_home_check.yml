@@ -4,6 +4,7 @@ hook: "Ist Ihr Zuhause bereit für ein Smart Home?"
 description: "Finden Sie in wenigen Fragen heraus, wie gut Ihr Zuhause für Smart-Home-Technologie vorbereitet ist und welche Schritte als nächstes sinnvoll sind."
 show_start_screen: true
 estimated_time: "2-3 Minuten"
+show_question_count: true  # Optional: set to false to hide question count on start screen
 # logo: "logo.svg"  # Optional: asset path (e.g., "logo.svg" for app/assets/images/logo.svg) or full URL
 theme:
   colors:

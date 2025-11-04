@@ -1,7 +1,7 @@
 module Rails
   module Assessment
     class Definition
-      attr_accessor :title, :slug, :hook, :description, :questions, :result_rules, :theme, :metadata, :estimated_time, :show_start_screen, :logo
+      attr_accessor :title, :slug, :hook, :description, :questions, :result_rules, :theme, :metadata, :estimated_time, :show_start_screen, :logo, :show_question_count
 
       def initialize(attributes = {})
         @title = attributes[:title]
@@ -15,6 +15,7 @@ module Rails
         @estimated_time = attributes[:estimated_time]
         @show_start_screen = attributes.key?(:show_start_screen) ? attributes[:show_start_screen] : false
         @logo = attributes[:logo]
+        @show_question_count = attributes.key?(:show_question_count) ? attributes[:show_question_count] : true
       end
 
       def add_question(question)
@@ -41,7 +42,8 @@ module Rails
           metadata: symbolized[:metadata],
           estimated_time: symbolized[:estimated_time],
           show_start_screen: symbolized[:show_start_screen],
-          logo: symbolized[:logo]
+          logo: symbolized[:logo],
+          show_question_count: symbolized[:show_question_count]
         )
 
         Array(symbolized[:questions]).each do |question_hash|

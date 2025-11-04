@@ -36,6 +36,18 @@ module Rails
           definition.metadata = hash
         end
 
+        def estimated_time(value)
+          definition.estimated_time = value
+        end
+
+        def show_start_screen(value = true)
+          definition.show_start_screen = value
+        end
+
+        def logo(value)
+          definition.logo = value
+        end
+
         def question(text = nil, id: nil, multi_select: false, required: true, help_text: nil, **opts, &block)
           question = Rails::Assessment::Question.new(
             id: id || Rails::Assessment::Definition.parameterize(text),

@@ -19,15 +19,11 @@ export default class extends Controller {
     this.started = true
 
     if (this.hasStartScreenTarget) {
-      this.startScreenTarget.classList.add("fade-out")
-      setTimeout(() => {
-        this.startScreenTarget.style.display = "none"
-      }, 300)
+      this.startScreenTarget.classList.remove("is-active")
     }
 
     if (this.hasContentTarget) {
-      this.contentTarget.classList.remove("is-hidden")
-      this.contentTarget.classList.add("fade-in")
+      this.contentTarget.classList.add("is-active")
     }
 
     this.showCurrentStep()
