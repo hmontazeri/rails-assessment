@@ -92,12 +92,12 @@
              data-required="true"
              data-lead-capture="true">
           <div class="assessment-question">
-            <p class="question-text">Fast geschafft! Um Ihr persönliches Ergebnis zu erhalten:</p>
+            <p class="question-text"><%= t('rails.assessment.form.almost_done') %></p>
 
             <div class="lead-capture-fields">
               <% if @definition.capture_name %>
                 <div class="lead-capture-field">
-                  <label for="lead_name" class="lead-capture-label">Ihr Name</label>
+                  <label for="lead_name" class="lead-capture-label"><%= t('rails.assessment.form.name_label') %></label>
                   <input type="text"
                          id="lead_name"
                          name="lead[name]"
@@ -110,7 +110,7 @@
 
               <% if @definition.capture_email %>
                 <div class="lead-capture-field">
-                  <label for="lead_email" class="lead-capture-label">Ihre E-Mail</label>
+                  <label for="lead_email" class="lead-capture-label"><%= t('rails.assessment.form.email_label') %></label>
                   <input type="email"
                          id="lead_email"
                          name="lead[email]"

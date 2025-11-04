@@ -1,0 +1,15 @@
+en:
+  rails:
+    assessment:
+      result:
+        greeting: "Hello %{name}!"
+        default_headline: "Your Result"
+        score_label: "Score"
+        insights_title: "Your Personal Insights"
+        recommendations_title: "Recommendations for You"
+        email_sent: "We've sent your results to %{email}."
+        restart_button: "Restart Assessment"
+      form:
+        name_label: "Your Name"
+        email_label: "Your Email"
+        almost_done: "Almost done! To get your personalized result:"

@@ -131,6 +131,8 @@ show_start_screen: true  # Optional: enables intro screen before first question
 estimated_time: "2-3 Minuten"  # Optional: displayed on start screen
 show_question_count: false  # Optional: set to false to hide question count (default: true)
 logo: "logo.svg"  # Optional: asset path or URL, displays in top right corner
+capture_name: true  # Optional: capture user's name before results
+capture_email: true  # Optional: capture user's email before results
 questions:
   - text: "Haben Sie WLAN in allen Räumen?"
     options:
@@ -309,12 +311,22 @@ result_rules:
         - "Focus on refining your game plan with a coach"
         - "Study opponent footage to identify patterns"
         - "Practice scenario-based drills regularly"
+      # Add custom sections - you can access these in your view!
+      next_steps:
+        - "Schedule a consultation with our coaching team"
+        - "Download the Competition Preparation Guide"
+        - "Join our exclusive training community"
+      resources:
+        - title: "Competition Training Manual"
+          url: "https://example.com/manual.pdf"
+        - title: "Video: Mental Preparation"
+          url: "https://example.com/mental-prep-video"
       cta_text: "Get Your Personalized Training Plan"
 ```
 
-### Result Page Sections
+### Built-in Result Page Sections
 
-The enhanced result page displays:
+The enhanced result page automatically displays:
 
 1. **Personalized Greeting**: Shows user's name if captured
 2. **Score Visualization**: Animated circular progress indicator
@@ -325,7 +337,55 @@ The enhanced result page displays:
 7. **Educational Content**: From `payload.educational_content` array - actionable recommendations
 8. **Custom CTA**: From `payload.cta_text` - converts better than generic "restart"
 
-All payload fields are optional. If not provided, the system falls back to displaying the `text` field.
+All built-in payload fields are optional. If not provided, the system falls back to displaying the `text` field.
+
+### Adding Custom Sections
+
+You can add any custom fields to the payload and render them in the result view. Edit `app/views/rails/assessment/assessments/result.html.erb` to add additional sections:
+
+```erb
+<% next_steps = result_payload(@result_rule, :next_steps, []) %>
+<% if next_steps.any? %>
+  <div class="result-section result-next-steps-section">
+    <h2 class="result-section-title">Next Steps</h2>
+    <ol class="result-numbered-list">
+      <% next_steps.each do |step| %>
+        <li class="result-list-item"><%= step %></li>
+      <% end %>
+    </ol>
+  </div>
+<% end %>
+
+<% resources = result_payload(@result_rule, :resources, []) %>
+<% if resources.any? %>
+  <div class="result-section result-resources-section">
+    <h2 class="result-section-title">Recommended Resources</h2>
+    <ul class="result-resource-list">
+      <% resources.each do |resource| %>
+        <li class="result-resource-item">
+          <a href="<%= resource[:url] %>" target="_blank" rel="noopener noreferrer">
+            <%= resource[:title] %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+```
+
+Then in your YAML, add these custom fields:
+
+```yaml
+payload:
+  next_steps:
+    - "Schedule a consultation"
+    - "Download the guide"
+  resources:
+    - title: "Resource Title"
+      url: "https://example.com"
+```
+
+The `result_payload` helper safely accesses nested payload data with optional default values, making it perfect for custom sections you define yourself.
 
 ### Helper Methods
 
