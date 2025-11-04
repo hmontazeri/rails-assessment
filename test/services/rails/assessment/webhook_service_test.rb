@@ -14,7 +14,7 @@ module Rails
             "q1" => {
               "question" => "Test Question",
               "option" => { "text" => "Yes" },
-              "tags" => ["yes"],
+              "tags" => [ "yes" ],
               "score" => 5
             }
           },
@@ -106,7 +106,7 @@ module Rails
 
         assert_requested(:post, "https://example.com/webhook") do |req|
           json = JSON.parse(req.body)
-          assert_equal ["yes"], json["tags"]
+          assert_equal [ "yes" ], json["tags"]
         end
       end
 

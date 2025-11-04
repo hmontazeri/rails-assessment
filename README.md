@@ -185,6 +185,8 @@ The loader watches these files in development (no caching) and reloads automatic
 | `logo`               | String  | No       | Asset path (e.g., `"logo.svg"`) or full URL. Displays in top right corner (max 120×60px).       |
 | `capture_name`       | Boolean | No       | Capture user's name before showing results. Default: `false`.                                   |
 | `capture_email`      | Boolean | No       | Capture user's email before showing results. Default: `false`.                                  |
+| `notification_email` | String  | No       | Email address to notify when a lead is captured. Sends lead details and assessment results.     |
+| `webhook_url`        | String  | No       | Webhook URL to POST lead data to when captured. Integrates with Zapier, Make, Notion, etc.     |
 | `questions`          | Array   | Yes      | List of question objects (see below).                                                           |
 | `result_rules`       | Array   | Yes      | Logic rules for determining results.                                                            |
 | `theme`              | Hash    | No       | Per-assessment theme overrides.                                                                 |
@@ -290,6 +292,69 @@ When enabled, name and/or email fields appear as the final step before submissio
 <% end %>
 ```
 
+## Lead Notifications & Webhooks
+
+Automatically notify yourself and external services when leads are captured:
+
+```yaml
+title: "Product Fit Assessment"
+capture_email: true
+notification_email: "leads@example.com"  # Send notification when lead captured
+webhook_url: "https://hooks.zapier.com/hooks/catch/..."  # Post lead data to webhook
+```
+
+When a user completes the assessment with an email captured:
+
+1. **Email Notification**: An email is sent to `notification_email` with the lead's name, email, score, result, and tags
+2. **Webhook**: Lead data is POSTed to `webhook_url` as JSON for integration with Zapier, Make, Notion, CRM systems, etc.
+
+### Webhook Payload
+
+The webhook receives a JSON POST with:
+
+```json
+{
+  "response_id": 123,
+  "assessment_slug": "product-fit",
+  "lead": {
+    "name": "John Doe",
+    "email": "john@example.com"
+  },
+  "score": 75,
+  "result": "Great fit for premium tier",
+  "tags": ["qualified", "enterprise"],
+  "created_at": "2024-11-04T10:30:00Z",
+  "answers": { ... }
+}
+```
+
+This allows you to:
+- Create Zapier/Make automations to add leads to CRMs
+- POST directly to Notion databases
+- Send data to email marketing platforms
+- Trigger webhooks in your own backend
+- Build real-time dashboards
+
+No external gems required—uses standard Ruby HTTP library with graceful error handling.
+
+### Configuration Example
+
+```yaml
+title: "Smart Home Assessment"
+capture_name: true
+capture_email: true
+notification_email: "sales@company.com"
+webhook_url: "https://api.zapier.com/hooks/catch/..."
+
+result_rules:
+  - tags: [qualified]
+    score_at_least: 80
+    text: "You're a great fit!"
+    payload:
+      cta_text: "Schedule Demo"
+      cta_url: "https://calendly.com/company/demo"
+```
+
 ## Enhanced Result Pages
 
 Create engaging, conversion-focused result pages using the `payload` field in result rules:
@@ -322,6 +387,7 @@ result_rules:
         - title: "Video: Mental Preparation"
           url: "https://example.com/mental-prep-video"
       cta_text: "Get Your Personalized Training Plan"
+      cta_url: "https://calendly.com/coaching/session"  # Custom CTA button destination
 ```
 
 ### Built-in Result Page Sections
@@ -336,6 +402,8 @@ The enhanced result page automatically displays:
 6. **Personalized Insights**: From `payload.insights` array - highlighted with checkmarks
 7. **Educational Content**: From `payload.educational_content` array - actionable recommendations
 8. **Custom CTA**: From `payload.cta_text` - converts better than generic "restart"
+   - **CTA Destination**: From `payload.cta_url` - redirect button to custom URL (Calendly, contact form, etc.)
+   - **Default**: If `cta_url` not provided, button defaults to restarting the assessment
 
 All built-in payload fields are optional. If not provided, the system falls back to displaying the `text` field.
 
@@ -400,11 +468,24 @@ user_email(@response)                                         # Get captured ema
 
 ## Testing
 
-The engine ships with Minitest coverage for the logic engine, YAML/Ruby loaders, response builder, and configuration. Run the suite from the engine root:
+The engine ships with comprehensive Minitest coverage including:
+
+- **Logic Engine Tests** — rule matching and result evaluation
+- **YAML/Ruby Loader Tests** — definition parsing and DSL
+- **Response Builder Tests** — answer collection and validation
+- **Configuration Tests** — theme resolution and settings
+- **Lead Notification Mailer Tests** — email generation and delivery
+- **Webhook Service Tests** — HTTP payload delivery and error handling
+- **Definition Tests** — all configuration fields including lead capture
+- **Integration Tests** — full lead capture workflow with emails and webhooks
+
+Run the test suite from the engine root:
 
 ```bash
 bundle exec rake test
 ```
+
+The test suite includes 63 tests with 129 assertions, covering all lead capture functionality, email notifications, webhook delivery, and result page customization.
 
 > **Heads-up:** The dummy app depends on `puma`. Ensure it is available in your environment before running the test task.
 

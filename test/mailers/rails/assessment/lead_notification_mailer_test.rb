@@ -14,7 +14,7 @@ module Rails
             "q1" => {
               "question" => "Test Question",
               "option" => { "text" => "Yes", "tag" => "yes", "score" => 5 },
-              "tags" => ["yes"],
+              "tags" => [ "yes" ],
               "score" => 5
             }
           },
@@ -29,7 +29,7 @@ module Rails
       test "sends email with correct recipient" do
         email = LeadNotificationMailer.new_lead(@response, "leads@example.com")
 
-        assert_equal ["leads@example.com"], email.to
+        assert_equal [ "leads@example.com" ], email.to
       end
 
       test "includes lead name in subject when available" do
@@ -93,7 +93,7 @@ module Rails
 
         email = LeadNotificationMailer.new_lead(@response, "leads@example.com")
 
-        assert_equal ["leads@example.com"], email.to
+        assert_equal [ "leads@example.com" ], email.to
         assert email.body.encoded.present?
       end
 

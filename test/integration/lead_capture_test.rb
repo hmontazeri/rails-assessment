@@ -16,7 +16,7 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
         option "Yes", tag: :yes, score: 5
       end
 
-      result_rule text: "Result", tags: [:yes] do
+      result_rule text: "Result", tags: [ :yes ] do
         payload(
           headline: "Test Result",
           cta_text: "Click Here",
@@ -49,7 +49,7 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
 
     assert ActionMailer::Base.deliveries.any?
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["leads@example.com"], email.to
+    assert_equal [ "leads@example.com" ], email.to
     assert_includes email.body.encoded, "John Doe"
   end
 
@@ -78,7 +78,7 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
       answers: {
         "test_question" => {
           "option" => { "text" => "Yes", "tag" => "yes", "score" => 5 },
-          "tags" => ["yes"],
+          "tags" => [ "yes" ],
           "score" => 5
         },
         "lead" => {
@@ -107,7 +107,7 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
         option "Yes", tag: :yes, score: 1
       end
 
-      result_rule text: "Result", tags: [:yes] do
+      result_rule text: "Result", tags: [ :yes ] do
         payload(headline: "Result")
       end
     end
@@ -116,7 +116,7 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
     saved_response = Rails::Assessment::Response.create!(
       assessment_slug: "default-cta-test",
       answers: {
-        "test" => { "option" => { "text" => "Yes" }, "tags" => ["yes"], "score" => 1 }
+        "test" => { "option" => { "text" => "Yes" }, "tags" => [ "yes" ], "score" => 1 }
       },
       result: "Result"
     )
@@ -133,7 +133,7 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
       answers: {
         "test_question" => {
           "option" => { "text" => "Yes", "tag" => "yes", "score" => 5 },
-          "tags" => ["yes"],
+          "tags" => [ "yes" ],
           "score" => 5
         },
         "lead" => {
