@@ -7,19 +7,50 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <% resolved_theme = @theme || current_assessment_theme %>
+    <% dark_mode_enabled = assessment_dark_mode_enabled?(resolved_theme) %>
+    <% dark_mode_default = assessment_dark_mode_default(resolved_theme) == :dark %>
+
     <%= stylesheet_link_tag "rails/assessment/theme", media: "all", "data-turbo-track": "reload" %>
     <% if respond_to?(:javascript_importmap_tags) %>
       <%= javascript_importmap_tags %>
     <% end %>
     <style>
-      :root { <%= assessment_css_variables(@theme || current_assessment_theme) %> }
+      :root { <%= assessment_css_variables(resolved_theme) %> }
+      <% if dark_mode_enabled %>
+        .rails-assessment-dark { <%= assessment_css_variables(assessment_theme_variant(resolved_theme, :dark)) %> }
+      <% end %>
     </style>
   </head>
-  <body class="rails-assessment-body no-js">
+  <body class="rails-assessment-body no-js <%= 'rails-assessment-dark' if dark_mode_enabled && dark_mode_default %>">
     <main class="rails-assessment-wrapper">
       <%= render "rails/assessment/shared/flash" %>
       <%= yield %>
     </main>
+    <% if dark_mode_enabled %>
+      <div class="assessment-theme-toggle"
+           data-controller="assessment-theme-toggle"
+           data-assessment-theme-toggle-dark-class-value="rails-assessment-dark"
+           data-assessment-theme-toggle-preference-key-value="rails-assessment-theme"
+           data-assessment-theme-toggle-default-value="<%= dark_mode_default ? 'dark' : 'light' %>">
+        <button type="button"
+                class="assessment-theme-toggle__button"
+                data-action="assessment-theme-toggle#toggle"
+                data-assessment-theme-toggle-target="button"
+                aria-label="Toggle color theme"
+                aria-pressed="false"
+                aria-live="polite">
+          <span class="assessment-theme-toggle__icon"
+                data-assessment-theme-toggle-target="iconMoon"
+                aria-hidden="true">🌙</span>
+          <span class="assessment-theme-toggle__icon"
+                data-assessment-theme-toggle-target="iconSun"
+                aria-hidden="true">☀️</span>
+          <span class="assessment-theme-toggle__label"
+                data-assessment-theme-toggle-target="label"></span>
+        </button>
+      </div>
+    <% end %>
     <script>
       document.body.classList.remove("no-js");
       document.body.classList.add("js");

@@ -13,6 +13,7 @@ module Rails
         app.config.assets.precompile += %w[
           rails/assessment/theme.css
           rails/assessment/controllers/assessment_controller.js
+          rails/assessment/controllers/theme_toggle_controller.js
         ]
       end
 

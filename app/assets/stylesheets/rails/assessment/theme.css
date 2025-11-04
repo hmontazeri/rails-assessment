@@ -287,3 +287,55 @@
     font-size: 1.75rem;
   }
 }
+
+.assessment-theme-toggle {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 20;
+}
+
+.assessment-theme-toggle__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: var(--assessment-radius-sm, 0.5rem);
+  background: rgba(15, 23, 42, 0.08);
+  color: var(--assessment-color-neutral-900, #0f172a);
+  padding: 0.55rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(6px);
+}
+
+.assessment-theme-toggle__button:hover {
+  transform: translateY(-1px);
+}
+
+.assessment-theme-toggle__icon {
+  font-size: 1rem;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.assessment-theme-toggle__icon.is-active {
+  opacity: 1;
+}
+
+.assessment-theme-toggle__label {
+  font-size: 0.85rem;
+}
+
+.rails-assessment-dark .assessment-theme-toggle__button {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--assessment-color-neutral-50, #f8fafc);
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.35);
+}
+
+.rails-assessment-dark .assessment-theme-toggle__button:hover {
+  transform: translateY(-1px);
+}

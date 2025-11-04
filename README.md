@@ -32,11 +32,14 @@
    ```ruby
    # config/importmap.rb
    pin "rails-assessment/controllers/assessment_controller", to: "rails/assessment/controllers/assessment_controller.js"
+   pin "rails-assessment/controllers/theme_toggle_controller", to: "rails/assessment/controllers/theme_toggle_controller.js"
    ```
    ```javascript
    // app/javascript/controllers/index.js
    import AssessmentController from "rails-assessment/controllers/assessment_controller"
+   import ThemeToggleController from "rails-assessment/controllers/theme_toggle_controller"
    application.register("assessment", AssessmentController)
+   application.register("assessment-theme-toggle", ThemeToggleController)
    ```
 6. Visit `http://localhost:3000/assessments/<slug>` to see the assessment in action.
 
@@ -72,7 +75,15 @@ Rails::Assessment.configure do |config|
       card: "0 10px 30px rgba(15, 23, 42, 0.08)"
     },
     dark_mode: {
-      enabled: false
+      enabled: false,
+      overrides: {
+        colors: {
+          neutral: {
+            50 => "#0F172A",
+            900 => "#E2E8F0"
+          }
+        }
+      }
     }
   }
 

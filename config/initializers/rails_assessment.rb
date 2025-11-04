@@ -24,7 +24,16 @@ Rails::Assessment.configure do |config|
     },
     dark_mode: {
       enabled: true,
-      primary: "#7DD3FC"
+      default: :dark,
+      overrides: {
+        colors: {
+          primary: "#7DD3FC",
+          neutral: { 50 => "#020617", 900 => "#F8FAFC" }
+        },
+        shadow: {
+          card: "0 25px 55px rgba(8, 47, 73, 0.45)"
+        }
+      }
     }
   }
 
