@@ -18,8 +18,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_02_15_000000) do
     t.string "result"
     t.datetime "updated_at", null: false
     t.string "uuid", null: false
-    t.index ["assessment_slug"], name: "index_rails_assessment_responses_on_assessment_slug"
-    t.index ["created_at"], name: "index_rails_assessment_responses_on_created_at"
-    t.index ["uuid"], name: "index_rails_assessment_responses_on_uuid", unique: true
+    t.index [ "assessment_slug" ], name: "index_rails_assessment_responses_on_assessment_slug"
+    t.index [ "created_at" ], name: "index_rails_assessment_responses_on_created_at"
+    t.index [ "uuid" ], name: "index_rails_assessment_responses_on_uuid", unique: true
   end
 end
