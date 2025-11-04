@@ -1,5 +1,12 @@
 :root {
-  --assessment-font-sans: var(--assessment-typography-font-sans, 'Inter, system-ui');
+  --assessment-font-sans: var(
+    --assessment-typography-font-sans,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif
+  );
   --assessment-color-primary: var(--assessment-colors-primary, #2563EB);
   --assessment-color-neutral-50: var(--assessment-colors-neutral-50, #F8FAFC);
   --assessment-color-neutral-900: var(--assessment-colors-neutral-900, #0F172A);
