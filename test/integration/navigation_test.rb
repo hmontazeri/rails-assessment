@@ -40,7 +40,7 @@ class NavigationTest < ActionDispatch::IntegrationTest
     get "/rails-assessment/logo-check"
     assert_response :success
 
-    assert_select "section.assessment .assessment-logo img.assessment-logo-image[src='https://example.com/logo.png']"
+    assert_select ".assessment-logo img.assessment-logo-image[src='https://example.com/logo.png']"
   end
 
   test "assessment renders start screen and keeps content inactive when enabled" do

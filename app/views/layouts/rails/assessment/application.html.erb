@@ -23,6 +23,12 @@
     </style>
   </head>
   <body class="rails-assessment-body no-js <%= 'rails-assessment-dark' if dark_mode_enabled && dark_mode_default %>">
+    <% if @definition&.logo.present? %>
+      <div class="assessment-logo">
+        <% logo_src = @definition.logo.start_with?('http://', 'https://') ? @definition.logo : asset_path(@definition.logo) %>
+        <img src="<%= logo_src %>" alt="<%= @definition.title %> logo" class="assessment-logo-image" />
+      </div>
+    <% end %>
     <main class="rails-assessment-wrapper">
       <%= render "rails/assessment/shared/flash" %>
       <%= yield %>

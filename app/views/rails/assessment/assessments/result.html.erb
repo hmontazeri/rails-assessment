@@ -11,13 +11,6 @@
 <% cta_url = result_payload(@result_rule, :cta_url, assessment_path(@definition.slug)) %>
 
 <section class="assessment-result">
-  <% if @definition.logo.present? %>
-    <div class="assessment-logo">
-      <% logo_src = @definition.logo.start_with?('http://', 'https://') ? @definition.logo : asset_path(@definition.logo) %>
-      <img src="<%= logo_src %>" alt="<%= @definition.title %> logo" class="assessment-logo-image" />
-    </div>
-  <% end %>
-
   <header class="result-header">
     <% if user_name(@response).present? %>
       <p class="result-greeting"><%= t('rails.assessment.result.greeting', name: user_name(@response)) %></p>

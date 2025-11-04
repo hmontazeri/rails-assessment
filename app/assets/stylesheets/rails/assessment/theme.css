@@ -658,10 +658,10 @@
 }
 
 .assessment-logo {
-  position: absolute;
+  position: fixed;
   top: 1.5rem;
-  right: 1.5rem;
-  z-index: 10;
+  left: 1.5rem;
+  z-index: 20;
 }
 
 .assessment-logo-image {
@@ -676,7 +676,7 @@
 @media (max-width: 640px) {
   .assessment-logo {
     top: 1rem;
-    right: 1rem;
+    left: 1rem;
   }
 
   .assessment-logo-image {

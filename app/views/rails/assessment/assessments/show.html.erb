@@ -3,13 +3,6 @@
 <% end %>
 
 <section class="assessment" data-controller="assessment" data-assessment-total-value="<%= @definition.questions.size %>" data-assessment-show-start-screen-value="<%= @definition.show_start_screen %>">
-  <% if @definition.logo.present? %>
-    <div class="assessment-logo">
-      <% logo_src = @definition.logo.start_with?('http://', 'https://') ? @definition.logo : asset_path(@definition.logo) %>
-      <img src="<%= logo_src %>" alt="<%= @definition.title %> logo" class="assessment-logo-image" />
-    </div>
-  <% end %>
-
   <% if @definition.show_start_screen %>
     <div class="assessment-start-screen is-active" data-assessment-target="startScreen">
       <header class="assessment-start-header">
