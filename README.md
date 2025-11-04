@@ -129,7 +129,7 @@ hook: "Ist Ihr Zuhause bereit für ein Smart Home?"
 description: "Finden Sie in wenigen Fragen heraus, wie gut Ihr Zuhause für Smart-Home-Technologie vorbereitet ist."  # Optional
 show_start_screen: true  # Optional: enables intro screen before first question
 estimated_time: "2-3 Minuten"  # Optional: displayed on start screen
-logo: "/assets/logo.png"  # Optional: displays in top right corner
+logo: "logo.svg"  # Optional: asset path or URL, displays in top right corner
 questions:
   - text: "Haben Sie WLAN in allen Räumen?"
     options:
@@ -178,7 +178,7 @@ The loader watches these files in development (no caching) and reloads automatic
 | `description`        | String  | No       | Longer description displayed on the start screen (if enabled).                                  |
 | `show_start_screen`  | Boolean | No       | Enables an intro screen with description, time estimate, and start button. Default: `false`.    |
 | `estimated_time`     | String  | No       | Time estimate displayed on start screen (e.g., "5 minutes", "2-3 Minuten").                     |
-| `logo`               | String  | No       | URL or asset path to logo image. Displays in top right corner (max 120×60px).                   |
+| `logo`               | String  | No       | Asset path (e.g., `"logo.svg"`) or full URL. Displays in top right corner (max 120×60px).       |
 | `questions`          | Array   | Yes      | List of question objects (see below).                                                           |
 | `result_rules`       | Array   | Yes      | Logic rules for determining results.                                                            |
 | `theme`              | Hash    | No       | Per-assessment theme overrides.                                                                 |
@@ -249,7 +249,7 @@ title: "Product Fit Assessment"
 description: "Answer a few quick questions to see if our product is right for you."
 show_start_screen: true
 estimated_time: "3-5 minutes"
-logo: "/assets/company-logo.png"
+logo: "company-logo.svg"  # or "https://example.com/logo.png" for external URLs
 ```
 
 The start screen displays:
