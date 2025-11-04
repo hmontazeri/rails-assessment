@@ -23,11 +23,10 @@ module Rails
 
       # Determine CTA URL including response UUID when provided
       # @param raw_url [String, nil] CTA URL from payload
-      # @param slug [String] assessment slug
+      # @param fallback_url [String] fallback URL when no CTA specified
       # @param response [Response] response object with UUID
       # @return [String] final CTA URL to use
-      def result_cta_url(raw_url, slug, response)
-        fallback_url = Rails::Assessment::Engine.routes.url_helpers.assessment_path(slug)
+      def result_cta_url(raw_url, fallback_url, response)
         return fallback_url if raw_url.blank?
         return raw_url if response.nil? || response.uuid.blank?
 

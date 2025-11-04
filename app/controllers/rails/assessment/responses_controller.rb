@@ -18,7 +18,7 @@ module Rails
 
         @response = Response.new(
           assessment_slug: @definition.slug,
-          answers: answers
+          answers: answers.merge(lead_answers)
         )
 
         result_rule = Rails::Assessment::LogicEngine.evaluate(
@@ -59,6 +59,18 @@ module Rails
 
       def response_params
         params.fetch(:response, {}).permit!
+      end
+
+      def lead_answers
+        permitted = lead_params.to_h
+        cleaned = permitted.transform_values { |value| value.presence }.compact
+        return {} if cleaned.empty?
+
+        { "lead" => cleaned }
+      end
+
+      def lead_params
+        params.fetch(:lead, {}).permit(:name, :email)
       end
 
       def reload_required?

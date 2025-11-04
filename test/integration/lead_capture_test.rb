@@ -24,11 +24,23 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
         )
       end
     end
+
+    @definition = Rails::Assessment.find("lead-test")
   end
 
   teardown do
     Rails::Assessment.registry.reset
   end
+
+  def engine_path(helper_name, *args)
+    options = args.last.is_a?(Hash) ? args.pop : {}
+    Rails::Assessment::Engine.routes.url_helpers.public_send(
+      helper_name,
+      *args,
+      **options.merge(script_name: "/rails-assessment")
+    )
+  end
+  private :engine_path
 
   test "email is sent when configured" do
     # Test by directly triggering the mailer since controller tests can be finicky
@@ -55,6 +67,8 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
 
   test "webhook service is called after response save" do
     # Verify that the webhook service is integrated into the response creation
+    stub_request(:post, "https://example.com/webhook").to_return(status: 200, body: "", headers: {})
+
     response = Rails::Assessment::Response.create!(
       assessment_slug: "lead-test",
       answers: {
@@ -89,8 +103,7 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
       result: "Result"
     )
 
-    path = Rails::Assessment::Engine.routes.url_helpers.assessment_result_path("lead-test", response_uuid: saved_response.uuid)
-    get path
+    get engine_path(:assessment_result_path, "lead-test", response_uuid: saved_response.uuid)
 
     assert_response :success
     assert_includes response.body, "https://example.com/consultation"
@@ -124,8 +137,7 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
       result: "Result"
     )
 
-    path = Rails::Assessment::Engine.routes.url_helpers.assessment_result_path("default-cta-test", response_uuid: saved_response.uuid)
-    get path
+    get engine_path(:assessment_result_path, "default-cta-test", response_uuid: saved_response.uuid)
 
     assert_response :success
     assert_includes response.body, "/rails-assessment/default-cta-test"
@@ -151,5 +163,38 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
     assert_equal "lead-test", saved_response.assessment_slug
     assert_equal "Test User", saved_response.answers.dig("lead", "name")
     assert_equal "test@example.com", saved_response.answers.dig("lead", "email")
+  end
+
+  test "submitting assessment captures lead data" do
+    path = engine_path(:assessment_response_path, "lead-test")
+
+    question = @definition.questions.first
+    question_id = question.id
+    option = question.options.first
+    option_value = option.id.presence || option.tag || option.value
+
+    if option.tag.blank? && option.value.blank?
+      option_value = option.id
+    end
+
+    stub_request(:post, "https://example.com/webhook").to_return(status: 200, body: "", headers: {})
+
+    assert_difference -> { Rails::Assessment::Response.count }, 1 do
+      post path, params: {
+        response: {
+          question_id => option_value
+        },
+        lead: {
+          name: "Clara Lead",
+          email: "clara@example.com"
+        }
+      }
+    end
+
+    saved_response = Rails::Assessment::Response.order(:created_at).last
+    assert_equal "Clara Lead", saved_response.answers.dig("lead", "name")
+    assert_equal "clara@example.com", saved_response.answers.dig("lead", "email")
+
+    assert_redirected_to engine_path(:assessment_result_path, "lead-test", response_uuid: saved_response.uuid)
   end
 end

@@ -21,6 +21,9 @@ module Rails
           score: @response.score,
           fallback_text: Rails::Assessment.configuration.fallback_result_text
         )
+        raw_cta_url = helpers.result_payload(@result_rule, :cta_url, nil)
+        fallback_cta_url = assessment_path(@definition.slug)
+        @cta_url = helpers.result_cta_url(raw_cta_url, fallback_cta_url, @response)
         @theme = theme_resolver.resolve(request: request, overrides: @definition.theme)
       end
 

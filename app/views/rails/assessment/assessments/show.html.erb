@@ -67,7 +67,7 @@
                 <label class="question-option">
                   <input type="<%= input_type %>"
                          name="<%= input_name %>"
-                         value="<%= option.id %>"
+                         value="<%= option.id.presence || option.tag || option.value %>"
                          data-action="change->assessment#markAnswered"
                          <%= 'required' if question.required? && !question.allow_multiple? %> />
                   <span class="option-label"><%= option.text %></span>
