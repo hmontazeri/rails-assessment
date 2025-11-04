@@ -8,7 +8,9 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "rails/assessment/theme", media: "all", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <% if respond_to?(:javascript_importmap_tags) %>
+      <%= javascript_importmap_tags %>
+    <% end %>
     <style>
       :root { <%= assessment_css_variables(@theme || current_assessment_theme) %> }
     </style>
