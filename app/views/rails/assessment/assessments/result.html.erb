@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <%= @definition.title %> – <%= t('.page_title') %>
+  <%= @definition.title %> – <%= t('rails.assessment.result.page_title') %>
 <% end %>
 
 <% headline = result_payload(@result_rule, :headline, nil) %>
@@ -19,9 +19,9 @@
 
   <header class="result-header">
     <% if user_name(@response).present? %>
-      <p class="result-greeting"><%= t('.greeting', name: user_name(@response)) %></p>
+      <p class="result-greeting"><%= t('rails.assessment.result.greeting', name: user_name(@response)) %></p>
     <% end %>
-    <h1 class="result-title"><%= headline.presence || t('.default_headline') %></h1>
+    <h1 class="result-title"><%= headline.presence || t('rails.assessment.result.default_headline') %></h1>
     <p class="result-subtitle"><%= @definition.title %></p>
   </header>
 
@@ -38,7 +38,7 @@
         </svg>
         <div class="result-score-text">
           <div class="result-score-value"><%= score_percentage(@response.score, 100) %>%</div>
-          <div class="result-score-label"><%= t('.score_label') %></div>
+          <div class="result-score-label"><%= t('rails.assessment.result.score_label') %></div>
         </div>
       </div>
       <% if score_message.present? %>
@@ -60,7 +60,7 @@
 
     <% if insights.any? %>
       <div class="result-section result-insights-section">
-        <h2 class="result-section-title"><%= t('.insights_title') %></h2>
+        <h2 class="result-section-title"><%= t('rails.assessment.result.insights_title') %></h2>
         <div class="result-insights">
           <% insights.each do |insight| %>
             <div class="result-insight-item">
@@ -74,7 +74,7 @@
 
     <% if educational_content.any? %>
       <div class="result-section result-educational-section">
-        <h2 class="result-section-title"><%= t('.recommendations_title') %></h2>
+        <h2 class="result-section-title"><%= t('rails.assessment.result.recommendations_title') %></h2>
         <ul class="result-educational-list">
           <% educational_content.each do |content| %>
             <li class="result-educational-item"><%= content %></li>
@@ -87,7 +87,7 @@
   <footer class="result-footer">
     <%= link_to cta_text, assessment_path(@definition.slug), class: "btn btn-primary btn-large" %>
     <% if user_email(@response).present? %>
-      <p class="result-footer-note"><%= t('.email_sent', email: user_email(@response)) %></p>
+      <p class="result-footer-note"><%= t('rails.assessment.result.email_sent', email: user_email(@response)) %></p>
     <% end %>
   </footer>
 </section>
