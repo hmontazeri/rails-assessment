@@ -403,8 +403,10 @@ The enhanced result page automatically displays:
 6. **Personalized Insights**: From `payload.insights` array - highlighted with checkmarks
 7. **Educational Content**: From `payload.educational_content` array - actionable recommendations
 8. **Custom CTA**: From `payload.cta_text` - converts better than generic "restart"
-   - **CTA Destination**: From `payload.cta_url` - redirect button to custom URL (Calendly, contact form, etc.)
-   - **Default**: If `cta_url` not provided, button defaults to restarting the assessment
+- **CTA Destination**: From `payload.cta_url` - redirect button to custom URL (Calendly, contact form, etc.)
+- **Default**: If `cta_url` not provided, button defaults to restarting the assessment
+- When a custom `cta_url` is supplied, the engine automatically appends `response_uuid` so downstream destinations can correlate results (e.g. `https://calendly.com/acme/demo?response_uuid=...`).
+- Lead captures are acknowledged directly on the page, showing the visitor’s name to keep the results feeling personal.
 
 All built-in payload fields are optional. If not provided, the system falls back to displaying the `text` field.
 

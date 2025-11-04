@@ -1,3 +1,6 @@
+require "uri"
+require "cgi"
+
 module Rails
   module Assessment
     module ApplicationHelper
@@ -9,6 +12,19 @@ module Rails
       def result_payload(result_rule, key, default = nil)
         return default unless result_rule&.payload.is_a?(Hash)
         result_rule.payload.fetch(key.to_sym, default)
+      end
+
+      # Determine CTA URL including response UUID when provided
+      # @param raw_url [String, nil] CTA URL from payload
+      # @param slug [String] assessment slug
+      # @param response [Response] response object with UUID
+      # @return [String] final CTA URL to use
+      def result_cta_url(raw_url, slug, response)
+        fallback_url = assessment_path(slug)
+        return fallback_url if raw_url.blank?
+        return raw_url if response.nil? || response.uuid.blank?
+
+        append_uuid_param(raw_url, response.uuid)
       end
 
       # Format and display a score
@@ -43,6 +59,19 @@ module Rails
       def user_email(response)
         return nil unless response&.answers.is_a?(Hash)
         response.answers.dig("lead", "email")
+      end
+
+      private
+
+      def append_uuid_param(url, uuid)
+        uri = URI.parse(url)
+        existing_params = uri.query ? CGI.parse(uri.query).transform_values(&:first) : {}
+        existing_params = existing_params.transform_keys(&:to_s)
+        existing_params["response_uuid"] = uuid
+        uri.query = existing_params.to_query
+        uri.to_s
+      rescue URI::InvalidURIError
+        url
       end
     end
   end

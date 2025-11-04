@@ -290,6 +290,12 @@
   font-size: 0.95rem;
 }
 
+.result-personal-note {
+  margin: 0.75rem 0 0;
+  color: var(--assessment-color-neutral-900-alpha-80);
+  font-size: 1rem;
+}
+
 .result-score-section {
   display: flex;
   flex-direction: column;

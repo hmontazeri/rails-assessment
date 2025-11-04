@@ -94,6 +94,8 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes response.body, "https://example.com/consultation"
+    assert_includes response.body, "?response_uuid=#{saved_response.uuid}"
+    assert_includes response.body, "John Doe"
     assert_includes response.body, "Click Here"
   end
 

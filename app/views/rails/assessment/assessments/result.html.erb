@@ -8,7 +8,7 @@
 <% educational_content = result_payload(@result_rule, :educational_content, []) %>
 <% score_message = result_payload(@result_rule, :score_message, nil) %>
 <% cta_text = result_payload(@result_rule, :cta_text, t('rails.assessment.result.restart_button')) %>
-<% cta_url = result_payload(@result_rule, :cta_url, assessment_path(@definition.slug)) %>
+<% cta_url = result_cta_url(result_payload(@result_rule, :cta_url, nil), @definition.slug, @response) %>
 
 <section class="assessment-result">
   <header class="result-header">
@@ -17,6 +17,9 @@
     <% end %>
     <h1 class="result-title"><%= headline.presence || t('rails.assessment.result.default_headline') %></h1>
     <p class="result-subtitle"><%= @definition.title %></p>
+    <% if user_name(@response).present? %>
+      <p class="result-personal-note"><%= t('rails.assessment.result.personal_note_html', name: user_name(@response)).html_safe %></p>
+    <% end %>
   </header>
 
   <% if @response&.score.present? %>

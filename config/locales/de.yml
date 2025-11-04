@@ -8,6 +8,7 @@ de:
       result:
         page_title: "Ergebnis"
         greeting: "Hallo %{name}!"
+        personal_note_html: "Danke, dass du das Assessment abgeschlossen hast, <strong>%{name}</strong>. Hier sind deine persönlichen Insights."
         default_headline: "Dein Ergebnis"
         score_label: "Score"
         insights_title: "Deine persönlichen Insights"
