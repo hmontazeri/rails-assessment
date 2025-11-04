@@ -5,6 +5,8 @@ module Rails
 
       initializer "rails_assessment.asset_paths" do |app|
         app.config.assets.paths << root.join("app", "javascript")
+        app.config.assets.paths << root.join("app", "assets", "stylesheets")
+        app.config.assets.paths << root.join("app", "assets", "images")
       end
 
       initializer "rails_assessment.assets.precompile" do |app|
