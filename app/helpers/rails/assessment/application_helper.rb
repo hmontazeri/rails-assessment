@@ -4,6 +4,7 @@ require "cgi"
 module Rails
   module Assessment
     module ApplicationHelper
+      include Rails::Assessment::Engine.routes.url_helpers
       # Safely access nested payload data from a result rule
       # @param result_rule [ResultRule] the result rule object
       # @param key [String, Symbol] the payload key to access
