@@ -5,6 +5,7 @@ module Rails
 
       protect_from_forgery with: :exception
 
+      helper Rails::Assessment::ApplicationHelper
       helper Rails::Assessment::Theme::Helpers
     end
   end
