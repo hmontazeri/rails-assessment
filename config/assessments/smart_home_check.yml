@@ -7,6 +7,8 @@ estimated_time: "2-3 Minuten"
 show_question_count: true
 capture_email: true  # Optional: capture user's email as last step
 capture_name: true   # Optional: capture user's name as last step
+notification_email: "leads@example.com"  # Optional: email address to receive lead notifications
+webhook_url: "https://hooks.zapier.com/hooks/catch/..."  # Optional: webhook URL to post lead data to
 # logo: "logo.svg"
 theme:
   colors:
@@ -64,6 +66,7 @@ result_rules:
         - "Planen Sie eine professionelle Verkabelung für maximale Zuverlässigkeit"
         - "Berücksichtigen Sie Sicherheit und Datenschutz von Anfang an"
       cta_text: "Jetzt Beratungsgespräch vereinbaren"
+      cta_url: "https://calendly.com/yourcompany/consultation"  # Optional: customize CTA button destination
 
   - tags:
       - wifi_ok
@@ -82,6 +85,7 @@ result_rules:
         - "Nutzen Sie WLAN-basierte Geräte für einfache Installation"
         - "Erweitern Sie Ihr System nach Bedarf und Budget"
       cta_text: "Kostenlose Erstberatung anfordern"
+      cta_url: "/contact"  # Optional: can be external URL or internal path
 
   - any_tags:
       - wifi_bad

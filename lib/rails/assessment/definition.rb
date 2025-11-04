@@ -1,7 +1,7 @@
 module Rails
   module Assessment
     class Definition
-      attr_accessor :title, :slug, :hook, :description, :questions, :result_rules, :theme, :metadata, :estimated_time, :show_start_screen, :logo, :show_question_count, :capture_email, :capture_name
+      attr_accessor :title, :slug, :hook, :description, :questions, :result_rules, :theme, :metadata, :estimated_time, :show_start_screen, :logo, :show_question_count, :capture_email, :capture_name, :notification_email, :webhook_url
 
       def initialize(attributes = {})
         @title = attributes[:title]
@@ -18,6 +18,8 @@ module Rails
         @show_question_count = attributes.key?(:show_question_count) ? attributes[:show_question_count] : true
         @capture_email = attributes.key?(:capture_email) ? attributes[:capture_email] : false
         @capture_name = attributes.key?(:capture_name) ? attributes[:capture_name] : false
+        @notification_email = attributes[:notification_email]
+        @webhook_url = attributes[:webhook_url]
       end
 
       def add_question(question)
@@ -47,7 +49,9 @@ module Rails
           logo: symbolized[:logo],
           show_question_count: symbolized[:show_question_count],
           capture_email: symbolized[:capture_email],
-          capture_name: symbolized[:capture_name]
+          capture_name: symbolized[:capture_name],
+          notification_email: symbolized[:notification_email],
+          webhook_url: symbolized[:webhook_url]
         )
 
         Array(symbolized[:questions]).each do |question_hash|

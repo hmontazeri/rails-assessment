@@ -8,6 +8,7 @@
 <% educational_content = result_payload(@result_rule, :educational_content, []) %>
 <% score_message = result_payload(@result_rule, :score_message, nil) %>
 <% cta_text = result_payload(@result_rule, :cta_text, t('rails.assessment.result.restart_button')) %>
+<% cta_url = result_payload(@result_rule, :cta_url, assessment_path(@definition.slug)) %>
 
 <section class="assessment-result">
   <% if @definition.logo.present? %>
@@ -85,7 +86,7 @@
   </article>
 
   <footer class="result-footer">
-    <%= link_to cta_text, assessment_path(@definition.slug), class: "btn btn-primary btn-large" %>
+    <%= link_to cta_text, cta_url, class: "btn btn-primary btn-large" %>
     <% if user_email(@response).present? %>
       <p class="result-footer-note"><%= t('rails.assessment.result.email_sent', email: user_email(@response)) %></p>
     <% end %>

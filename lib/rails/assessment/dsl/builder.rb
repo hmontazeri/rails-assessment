@@ -44,8 +44,28 @@ module Rails
           definition.show_start_screen = value
         end
 
+        def show_question_count(value = true)
+          definition.show_question_count = value
+        end
+
         def logo(value)
           definition.logo = value
+        end
+
+        def notification_email(value)
+          definition.notification_email = value
+        end
+
+        def webhook_url(value)
+          definition.webhook_url = value
+        end
+
+        def capture_email(value = true)
+          definition.capture_email = value
+        end
+
+        def capture_name(value = true)
+          definition.capture_name = value
         end
 
         def question(text = nil, id: nil, multi_select: false, required: true, help_text: nil, **opts, &block)

@@ -1,0 +1,20 @@
+New Lead Captured
+
+You have a new lead from <%= @assessment_slug %> assessment.
+
+Lead Information:
+<% if @user_name.present? %>
+Name: <%= @user_name %>
+<% end %>
+<% if @user_email.present? %>
+Email: <%= @user_email %>
+<% end %>
+Assessment: <%= @assessment_slug %>
+Score: <%= @score %>
+Result: <%= @result %>
+<% if @tags.present? %>
+Tags: <%= @tags %>
+<% end %>
+
+---
+This is an automated notification from your assessment tool.

@@ -1,0 +1,23 @@
+<h2>New Lead Captured</h2>
+
+<p>You have a new lead from <strong><%= @assessment_slug %></strong> assessment.</p>
+
+<h3>Lead Information</h3>
+<ul>
+  <% if @user_name.present? %>
+    <li><strong>Name:</strong> <%= @user_name %></li>
+  <% end %>
+  <% if @user_email.present? %>
+    <li><strong>Email:</strong> <%= @user_email %></li>
+  <% end %>
+  <li><strong>Assessment:</strong> <%= @assessment_slug %></li>
+  <li><strong>Score:</strong> <%= @score %></li>
+  <li><strong>Result:</strong> <%= @result %></li>
+  <% if @tags.present? %>
+    <li><strong>Tags:</strong> <%= @tags %></li>
+  <% end %>
+</ul>
+
+<p style="margin-top: 20px; color: #666; font-size: 12px;">
+  This is an automated notification from your assessment tool.
+</p>

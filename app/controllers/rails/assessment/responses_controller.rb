@@ -30,6 +30,16 @@ module Rails
         @response.result = result_rule&.text
 
         if @response.save
+          # Send lead notifications if configured
+          if @definition.notification_email.present? && @response.answers.dig("lead", "email").present?
+            LeadNotificationMailer.new_lead(@response, @definition.notification_email).deliver_later
+          end
+
+          # Post lead data to webhook if configured
+          if @definition.webhook_url.present?
+            WebhookService.post_lead(@response, @definition.webhook_url)
+          end
+
           redirect_to result_assessment_path(@definition.slug, response_id: @response.id)
         else
           flash.now[:alert] = "Bitte füllen Sie alle Pflichtfelder aus."
