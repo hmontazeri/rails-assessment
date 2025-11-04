@@ -181,6 +181,8 @@ The loader watches these files in development (no caching) and reloads automatic
 | `estimated_time`     | String  | No       | Time estimate displayed on start screen (e.g., "5 minutes", "2-3 Minuten").                     |
 | `show_question_count`| Boolean | No       | Show question count on start screen. Default: `true`.                                           |
 | `logo`               | String  | No       | Asset path (e.g., `"logo.svg"`) or full URL. Displays in top right corner (max 120×60px).       |
+| `capture_name`       | Boolean | No       | Capture user's name before showing results. Default: `false`.                                   |
+| `capture_email`      | Boolean | No       | Capture user's email before showing results. Default: `false`.                                  |
 | `questions`          | Array   | Yes      | List of question objects (see below).                                                           |
 | `result_rules`       | Array   | Yes      | Logic rules for determining results.                                                            |
 | `theme`              | Hash    | No       | Per-assessment theme overrides.                                                                 |
@@ -263,6 +265,78 @@ The start screen displays:
 - A prominent "Start Assessment" button
 
 This creates a more professional first impression and sets user expectations before they begin.
+
+## Lead Capture
+
+Capture user information before showing results to build your email list and personalize the experience:
+
+```yaml
+title: "Product Fit Assessment"
+capture_name: true   # Show name field before results
+capture_email: true  # Show email field before results
+```
+
+When enabled, name and/or email fields appear as the final step before submission. The captured data is stored in the response's `answers` hash under the `lead` key and can be accessed in views:
+
+```erb
+<% if user_name(@response).present? %>
+  Hello <%= user_name(@response) %>!
+<% end %>
+
+<% if user_email(@response).present? %>
+  We've sent your results to <%= user_email(@response) %>.
+<% end %>
+```
+
+## Enhanced Result Pages
+
+Create engaging, conversion-focused result pages using the `payload` field in result rules:
+
+```yaml
+result_rules:
+  - tags: [advanced, goal_compete]
+    score_at_least: 60
+    text: "Fallback text if payload not used"
+    payload:
+      headline: "🚀 You're Competition Ready!"
+      summary: "You have the experience and commitment to excel..."
+      score_message: "Your score indicates exceptional readiness"
+      insights:
+        - "Your advanced experience puts you ahead of 85% of participants"
+        - "Your high commitment shows dedication to improvement"
+        - "You have a clear competitive mindset"
+      educational_content:
+        - "Focus on refining your game plan with a coach"
+        - "Study opponent footage to identify patterns"
+        - "Practice scenario-based drills regularly"
+      cta_text: "Get Your Personalized Training Plan"
+```
+
+### Result Page Sections
+
+The enhanced result page displays:
+
+1. **Personalized Greeting**: Shows user's name if captured
+2. **Score Visualization**: Animated circular progress indicator
+3. **Custom Headline**: From `payload.headline` (supports emoji)
+4. **Summary**: From `payload.summary` - brief overview
+5. **Score Message**: From `payload.score_message` - contextual score interpretation
+6. **Personalized Insights**: From `payload.insights` array - highlighted with checkmarks
+7. **Educational Content**: From `payload.educational_content` array - actionable recommendations
+8. **Custom CTA**: From `payload.cta_text` - converts better than generic "restart"
+
+All payload fields are optional. If not provided, the system falls back to displaying the `text` field.
+
+### Helper Methods
+
+Use these helpers in your result views:
+
+```ruby
+result_payload(@result_rule, :headline, "Default Headline")  # Access payload data safely
+score_percentage(@response.score, 100)                        # Calculate percentage
+user_name(@response)                                          # Get captured name
+user_email(@response)                                         # Get captured email
+```
 
 ## Testing
 

@@ -4,8 +4,10 @@ hook: "Ist Ihr Zuhause bereit für ein Smart Home?"
 description: "Finden Sie in wenigen Fragen heraus, wie gut Ihr Zuhause für Smart-Home-Technologie vorbereitet ist und welche Schritte als nächstes sinnvoll sind."
 show_start_screen: true
 estimated_time: "2-3 Minuten"
-show_question_count: true  # Optional: set to false to hide question count on start screen
-# logo: "logo.svg"  # Optional: asset path (e.g., "logo.svg" for app/assets/images/logo.svg) or full URL
+show_question_count: true
+capture_email: true  # Optional: capture user's email as last step
+capture_name: true   # Optional: capture user's name as last step
+# logo: "logo.svg"
 theme:
   colors:
     primary: "#4A6B52"
@@ -46,13 +48,62 @@ result_rules:
       - wifi_ok
       - house
       - budget_high
+    score_at_least: 5
     text: "Perfekt! Ihr Zuhause ist bereit für ein Premium-Smart-Home-Upgrade."
+    payload:
+      headline: "🎉 Premium Smart Home Ready!"
+      summary: "Ihr Zuhause hat alle Voraussetzungen für ein erstklassiges Smart-Home-System. Sie verfügen über die perfekte Infrastruktur und das Budget für eine umfassende Lösung."
+      score_message: "Ihre Bewertung zeigt ideale Bedingungen für Smart Home"
+      insights:
+        - "Ihr stabiles WLAN ermöglicht zuverlässige Gerätesteuerung"
+        - "Als Hausbesitzer haben Sie volle Gestaltungsfreiheit"
+        - "Ihr Budget erlaubt Premium-Komponenten und professionelle Installation"
+      educational_content:
+        - "Starten Sie mit einem zentralen Smart-Home-Hub (z.B. Home Assistant)"
+        - "Investieren Sie in hochwertige Sensoren und Aktoren"
+        - "Planen Sie eine professionelle Verkabelung für maximale Zuverlässigkeit"
+        - "Berücksichtigen Sie Sicherheit und Datenschutz von Anfang an"
+      cta_text: "Jetzt Beratungsgespräch vereinbaren"
+
   - tags:
       - wifi_ok
       - budget_mid
+    score_at_least: 3
     text: "Gute Basis vorhanden. Wir empfehlen einen fokussierten Ausbau auf Sicherheit und Komfort."
+    payload:
+      headline: "✅ Gute Ausgangslage!"
+      summary: "Sie haben bereits wichtige Voraussetzungen erfüllt. Mit gezielten Investitionen können Sie Ihr Zuhause smart machen."
+      score_message: "Solide Grundlage für Smart-Home-Integration"
+      insights:
+        - "Ihr WLAN-Netzwerk ist für Smart-Home-Geräte geeignet"
+        - "Ihr Budget ermöglicht einen durchdachten, schrittweisen Ausbau"
+      educational_content:
+        - "Beginnen Sie mit essentiellen Bereichen: Beleuchtung und Heizung"
+        - "Nutzen Sie WLAN-basierte Geräte für einfache Installation"
+        - "Erweitern Sie Ihr System nach Bedarf und Budget"
+      cta_text: "Kostenlose Erstberatung anfordern"
+
   - any_tags:
       - wifi_bad
     text: "Verbessern Sie zuerst Ihr WLAN, um Smart-Home-Funktionen nutzen zu können."
+    payload:
+      headline: "📶 WLAN-Optimierung empfohlen"
+      summary: "Für ein zuverlässiges Smart Home ist eine stabile WLAN-Abdeckung essentiell. Wir helfen Ihnen, die richtige Grundlage zu schaffen."
+      insights:
+        - "Smart-Home-Geräte benötigen durchgehende Internetverbindung"
+      educational_content:
+        - "Investieren Sie in ein Mesh-WLAN-System für flächendeckende Abdeckung"
+        - "Positionieren Sie Router zentral im Haus"
+        - "Prüfen Sie Ihre Internetgeschwindigkeit (mind. 50 Mbit/s empfohlen)"
+      cta_text: "WLAN-Beratung anfragen"
+
   - fallback: true
     text: "Danke für Ihr Interesse. Wir helfen Ihnen gern bei den nächsten Smart-Home-Schritten."
+    payload:
+      headline: "Vielen Dank für Ihr Interesse!"
+      summary: "Jedes Zuhause kann smart werden. Lassen Sie uns gemeinsam die beste Lösung für Ihre Situation finden."
+      educational_content:
+        - "Smart Home passt sich an Ihre Bedürfnisse an"
+        - "Es gibt Lösungen für jedes Budget"
+        - "Schrittweiser Ausbau ist möglich"
+      cta_text: "Unverbindlich beraten lassen"

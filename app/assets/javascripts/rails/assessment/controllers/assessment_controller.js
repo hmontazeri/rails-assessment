@@ -98,6 +98,13 @@ export default class extends Controller {
     const required = step.dataset.required === "true"
     if (!required) return true
 
+    // Check if this is a lead capture step
+    if (step.dataset.leadCapture === "true") {
+      const textInputs = step.querySelectorAll("input[type='text'], input[type='email']")
+      return Array.from(textInputs).every((input) => input.value.trim() !== "")
+    }
+
+    // Regular question validation (radio/checkbox)
     const inputs = step.querySelectorAll("input[type='radio'], input[type='checkbox']")
     return Array.from(inputs).some((input) => input.checked)
   }

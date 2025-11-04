@@ -84,6 +84,46 @@
           </div>
         </turbo-frame>
       <% end %>
+
+      <% if @definition.capture_name || @definition.capture_email %>
+        <div class="assessment-step assessment-lead-capture"
+             data-assessment-target="step"
+             data-step-index="<%= @definition.questions.size %>"
+             data-required="true"
+             data-lead-capture="true">
+          <div class="assessment-question">
+            <p class="question-text">Fast geschafft! Um Ihr persönliches Ergebnis zu erhalten:</p>
+
+            <div class="lead-capture-fields">
+              <% if @definition.capture_name %>
+                <div class="lead-capture-field">
+                  <label for="lead_name" class="lead-capture-label">Ihr Name</label>
+                  <input type="text"
+                         id="lead_name"
+                         name="lead[name]"
+                         class="lead-capture-input"
+                         placeholder="Max Mustermann"
+                         required
+                         data-action="input->assessment#markAnswered" />
+                </div>
+              <% end %>
+
+              <% if @definition.capture_email %>
+                <div class="lead-capture-field">
+                  <label for="lead_email" class="lead-capture-label">Ihre E-Mail</label>
+                  <input type="email"
+                         id="lead_email"
+                         name="lead[email]"
+                         class="lead-capture-input"
+                         placeholder="max@beispiel.de"
+                         required
+                         data-action="input->assessment#markAnswered" />
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
 
     <div class="assessment-navigation">

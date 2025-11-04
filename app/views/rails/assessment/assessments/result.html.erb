@@ -2,17 +2,92 @@
   <%= @definition.title %> – Ergebnis
 <% end %>
 
+<% headline = result_payload(@result_rule, :headline, nil) %>
+<% summary = result_payload(@result_rule, :summary, nil) %>
+<% insights = result_payload(@result_rule, :insights, []) %>
+<% educational_content = result_payload(@result_rule, :educational_content, []) %>
+<% score_message = result_payload(@result_rule, :score_message, nil) %>
+<% cta_text = result_payload(@result_rule, :cta_text, "Assessment erneut starten") %>
+
 <section class="assessment-result">
+  <% if @definition.logo.present? %>
+    <div class="assessment-logo">
+      <% logo_src = @definition.logo.start_with?('http://', 'https://') ? @definition.logo : asset_path(@definition.logo) %>
+      <img src="<%= logo_src %>" alt="<%= @definition.title %> logo" class="assessment-logo-image" />
+    </div>
+  <% end %>
+
   <header class="result-header">
-    <h1 class="result-title">Ihr Ergebnis</h1>
+    <% if user_name(@response).present? %>
+      <p class="result-greeting">Hallo <%= user_name(@response) %>!</p>
+    <% end %>
+    <h1 class="result-title"><%= headline.presence || "Ihr Ergebnis" %></h1>
     <p class="result-subtitle"><%= @definition.title %></p>
   </header>
 
+  <% if @response&.score.present? %>
+    <div class="result-score-section">
+      <div class="result-score-circle">
+        <svg class="result-score-svg" viewBox="0 0 120 120">
+          <circle class="result-score-bg" cx="60" cy="60" r="54"></circle>
+          <circle class="result-score-fill"
+                  cx="60"
+                  cy="60"
+                  r="54"
+                  style="--score-percentage: <%= score_percentage(@response.score, 100) %>"></circle>
+        </svg>
+        <div class="result-score-text">
+          <div class="result-score-value"><%= score_percentage(@response.score, 100) %>%</div>
+          <div class="result-score-label">Score</div>
+        </div>
+      </div>
+      <% if score_message.present? %>
+        <p class="result-score-message"><%= score_message %></p>
+      <% end %>
+    </div>
+  <% end %>
+
   <article class="result-body">
-    <p class="result-text"><%= (@result_rule&.text || @response.result).to_s %></p>
+    <% if summary.present? %>
+      <div class="result-section result-summary">
+        <p class="result-text"><%= summary %></p>
+      </div>
+    <% else %>
+      <div class="result-section">
+        <p class="result-text"><%= (@result_rule&.text || @response.result).to_s %></p>
+      </div>
+    <% end %>
+
+    <% if insights.any? %>
+      <div class="result-section result-insights-section">
+        <h2 class="result-section-title">Ihre persönlichen Insights</h2>
+        <div class="result-insights">
+          <% insights.each do |insight| %>
+            <div class="result-insight-item">
+              <span class="result-insight-icon">✓</span>
+              <span class="result-insight-text"><%= insight %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if educational_content.any? %>
+      <div class="result-section result-educational-section">
+        <h2 class="result-section-title">Empfehlungen für Sie</h2>
+        <ul class="result-educational-list">
+          <% educational_content.each do |content| %>
+            <li class="result-educational-item"><%= content %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
   </article>
 
   <footer class="result-footer">
-    <%= link_to "Assessment erneut starten", assessment_path(@definition.slug), class: "btn btn-secondary" %>
+    <%= link_to cta_text, assessment_path(@definition.slug), class: "btn btn-primary btn-large" %>
+    <% if user_email(@response).present? %>
+      <p class="result-footer-note">Wir haben Ihr Ergebnis an <%= user_email(@response) %> gesendet.</p>
+    <% end %>
   </footer>
 </section>
