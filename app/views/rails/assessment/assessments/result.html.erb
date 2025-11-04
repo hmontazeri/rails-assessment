@@ -8,7 +8,7 @@
 <% educational_content = result_payload(@result_rule, :educational_content, []) %>
 <% score_message = result_payload(@result_rule, :score_message, nil) %>
 <% cta_text = result_payload(@result_rule, :cta_text, t('rails.assessment.result.restart_button')) %>
-<% cta_url = result_cta_url(result_payload(@result_rule, :cta_url, nil), @definition.slug, @response) %>
+<% cta_url = helpers.result_cta_url(result_payload(@result_rule, :cta_url, nil), @definition.slug, @response) %>
 
 <section class="assessment-result">
   <header class="result-header">
