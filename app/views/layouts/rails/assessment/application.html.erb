@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Rails assessment</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title><%= content_for?(:title) ? yield(:title) : (@definition&.title || "Assessment") %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
 
-  <%= yield :head %>
-
-  <%= stylesheet_link_tag    "rails/assessment/application", media: "all" %>
-</head>
-<body>
-
-<%= yield %>
-
-</body>
+    <%= stylesheet_link_tag "rails/assessment/theme", media: "all", "data-turbo-track": "reload" %>
+    <style>
+      :root { <%= assessment_css_variables(@theme || current_assessment_theme) %> }
+    </style>
+  </head>
+  <body class="rails-assessment-body no-js">
+    <main class="rails-assessment-wrapper">
+      <%= render "rails/assessment/shared/flash" %>
+      <%= yield %>
+    </main>
+    <script>
+      document.body.classList.remove("no-js");
+      document.body.classList.add("js");
+    </script>
+    <%= yield :scripts %>
+  </body>
 </html>
