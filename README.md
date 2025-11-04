@@ -9,6 +9,8 @@
 - **Persistence built-in** — stores submissions in a single `rails_assessment_responses` table (JSONB answers + result text).
 - **Hotwire UI** — Turbo Frames + a Stimulus controller provide a progressive multi-step experience with graceful no-JS fallback.
 - **Theme system** — inject CSS tokens per assessment, resolve themes via initializer, params, or request proc.
+- **Dark mode support** — optional dark mode toggle with customizable theme variables.
+- **Start screen** — optional intro screen with description, estimated time, and branding.
 
 ## Getting Started
 
@@ -58,8 +60,8 @@ Rails::Assessment.configure do |config|
     colors: {
       primary: "#2563EB",
       neutral: {
-        50 => "#F9FAFB",
-        900 => "#111827"
+        50 => "#F8FAFC",
+        900 => "#0F172A"
       }
     },
     typography: {
@@ -68,19 +70,20 @@ Rails::Assessment.configure do |config|
       body: :sans
     },
     radius: {
-      sm: "0.375rem",
-      lg: "0.75rem"
+      sm: "0.5rem",
+      lg: "1rem"
     },
     shadow: {
-      card: "0 10px 30px rgba(15, 23, 42, 0.08)"
+      card: "0 20px 45px rgba(15, 23, 42, 0.12)"
     },
     dark_mode: {
-      enabled: false,
+      enabled: true,        # Enable dark mode toggle
+      default: :light,      # Default theme (:light or :dark)
       overrides: {
         colors: {
           neutral: {
-            50 => "#0F172A",
-            900 => "#E2E8F0"
+            50 => "#0F172A",    # Dark background
+            900 => "#F8FAFC"    # Light text
           }
         }
       }
@@ -88,7 +91,12 @@ Rails::Assessment.configure do |config|
   }
 
   config.themes = {
-    "forest" => { colors: { primary: "#4A6B52" } }
+    "forest" => {
+      colors: {
+        primary: "#4A6B52",
+        accent: "#F1B722"
+      }
+    }
   }
 
   config.fallback_result_text = "Thanks for completing the assessment."
@@ -118,6 +126,10 @@ Create files in `config/assessments/*.yml`:
 title: "Smart Home Check"
 slug: "smart-home-check"
 hook: "Ist Ihr Zuhause bereit für ein Smart Home?"
+description: "Finden Sie in wenigen Fragen heraus, wie gut Ihr Zuhause für Smart-Home-Technologie vorbereitet ist."  # Optional
+show_start_screen: true  # Optional: enables intro screen before first question
+estimated_time: "2-3 Minuten"  # Optional: displayed on start screen
+logo: "/assets/logo.png"  # Optional: displays in top right corner
 questions:
   - text: "Haben Sie WLAN in allen Räumen?"
     options:
@@ -156,14 +168,41 @@ end
 
 The loader watches these files in development (no caching) and reloads automatically on request.
 
+### Assessment Options
+
+| Field                | Type    | Required | Description                                                                                     |
+| -------------------- | ------- | -------- | ----------------------------------------------------------------------------------------------- |
+| `title`              | String  | Yes      | The assessment title displayed in the header.                                                   |
+| `slug`               | String  | No       | URL-friendly identifier (auto-generated from title if omitted).                                 |
+| `hook`               | String  | No       | Eyebrow text displayed above the title.                                                         |
+| `description`        | String  | No       | Longer description displayed on the start screen (if enabled).                                  |
+| `show_start_screen`  | Boolean | No       | Enables an intro screen with description, time estimate, and start button. Default: `false`.    |
+| `estimated_time`     | String  | No       | Time estimate displayed on start screen (e.g., "5 minutes", "2-3 Minuten").                     |
+| `logo`               | String  | No       | URL or asset path to logo image. Displays in top right corner (max 120×60px).                   |
+| `questions`          | Array   | Yes      | List of question objects (see below).                                                           |
+| `result_rules`       | Array   | Yes      | Logic rules for determining results.                                                            |
+| `theme`              | Hash    | No       | Per-assessment theme overrides.                                                                 |
+
+### Question Options
+
+Each question supports:
+- `text` (required) — The question prompt.
+- `help_text` (optional) — Additional context displayed below the question.
+- `required` (optional) — Whether answer is required. Default: `true`.
+- `multi_select` (optional) — Allow multiple answers (checkboxes vs radios). Default: `false`.
+- `options` (required) — Array of answer options with `text`, `tag`, `score`, etc.
+
 ## Rendering & Flow
 
-- `GET /assessments/:slug` renders the multi-step form.
+- `GET /assessments/:slug` renders the assessment (start screen or first question).
+- If `show_start_screen: true`, displays intro with description, time estimate, and "Start Assessment" button.
+- Clicking start button smoothly transitions to the first question with fade animation.
+- The Stimulus controller manages step transitions, validates required steps, and keeps a progress bar in sync.
 - Submission posts to `/assessments/:slug/response` (local form, Turbo friendly).
 - Successful submissions redirect to `/assessments/:slug/result?response_id=...`.
 - Responses are stored in `Rails::Assessment::Response` with aggregated tags and score helpers.
 
-The Stimulus controller manages step transitions, validates required steps, and keeps a progress bar in sync. Without JavaScript the form gracefully falls back to a stacked layout via CSS.
+Without JavaScript the form gracefully falls back to a stacked layout via CSS.
 
 ## Logic Engine
 
@@ -174,6 +213,53 @@ The Stimulus controller manages step transitions, validates required steps, and 
 - `exclude_tags` — block rules when tags intersect.
 - `score_at_least` / `score_at_most` — numeric guards.
 - `fallback` — designated catch-all rule.
+
+## Dark Mode
+
+The engine includes built-in dark mode support. Enable it in your theme configuration:
+
+```ruby
+Rails::Assessment.configure do |config|
+  config.theme = {
+    # ... other theme settings
+    dark_mode: {
+      enabled: true,  # Enables the dark mode toggle button
+      default: :light,  # or :dark to default to dark mode
+      overrides: {
+        colors: {
+          neutral: {
+            50 => "#0F172A",   # Dark background
+            900 => "#E2E8F0"   # Light text
+          }
+        }
+      }
+    }
+  }
+end
+```
+
+When enabled, a floating toggle button appears in the bottom left corner. User preference is persisted to `localStorage`. The dark mode uses CSS variables that can be customized per assessment via the theme system.
+
+## Start Screen & Branding
+
+Enhance the user experience with an optional start screen:
+
+```yaml
+title: "Product Fit Assessment"
+description: "Answer a few quick questions to see if our product is right for you."
+show_start_screen: true
+estimated_time: "3-5 minutes"
+logo: "/assets/company-logo.png"
+```
+
+The start screen displays:
+- Your logo in the top right corner (if provided)
+- Assessment title and hook
+- Description text
+- Info cards showing estimated time and question count
+- A prominent "Start Assessment" button
+
+This creates a more professional first impression and sets user expectations before they begin.
 
 ## Testing
 

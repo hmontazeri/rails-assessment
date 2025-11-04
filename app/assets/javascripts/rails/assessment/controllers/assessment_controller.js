@@ -1,11 +1,35 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["step", "nextButton", "backButton", "submitButton", "progress"]
-  static values = { total: Number }
+  static targets = ["step", "nextButton", "backButton", "submitButton", "progress", "startScreen", "content"]
+  static values = { total: Number, showStartScreen: Boolean }
 
   connect() {
     this.currentIndex = 0
+    this.started = !this.showStartScreenValue
+
+    if (this.started) {
+      this.showCurrentStep()
+      this.updateControls()
+    }
+  }
+
+  start(event) {
+    event.preventDefault()
+    this.started = true
+
+    if (this.hasStartScreenTarget) {
+      this.startScreenTarget.classList.add("fade-out")
+      setTimeout(() => {
+        this.startScreenTarget.style.display = "none"
+      }, 300)
+    }
+
+    if (this.hasContentTarget) {
+      this.contentTarget.classList.remove("is-hidden")
+      this.contentTarget.classList.add("fade-in")
+    }
+
     this.showCurrentStep()
     this.updateControls()
   }

@@ -87,6 +87,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  position: relative;
 }
 
 .assessment-form {
@@ -360,4 +361,127 @@
 
 .assessment-theme-toggle__label {
   font-size: 0.85rem;
+}
+
+.assessment-start-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+}
+
+.assessment-start-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 540px;
+}
+
+.assessment-start-description {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--assessment-color-neutral-900-alpha-70);
+  margin: 0;
+}
+
+.assessment-start-info {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.assessment-start-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: var(--assessment-color-neutral-900-alpha-05);
+  border-radius: var(--assessment-radius-sm);
+  border: 1px solid var(--assessment-color-neutral-900-alpha-10);
+}
+
+.assessment-start-info-icon {
+  font-size: 1.5rem;
+}
+
+.assessment-start-info-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.assessment-start-info-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--assessment-color-neutral-900-alpha-60);
+  font-weight: 600;
+}
+
+.assessment-start-info-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--assessment-color-neutral-900);
+}
+
+.btn-start {
+  margin-top: 1rem;
+  font-size: 1rem;
+  padding: 1rem 2rem;
+}
+
+.assessment-content.is-hidden {
+  display: none;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.assessment-logo {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
+}
+
+.assessment-logo-image {
+  max-width: 120px;
+  max-height: 60px;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+@media (max-width: 640px) {
+  .assessment-logo {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .assessment-logo-image {
+    max-width: 80px;
+    max-height: 40px;
+  }
 }

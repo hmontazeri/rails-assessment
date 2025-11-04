@@ -1,7 +1,7 @@
 module Rails
   module Assessment
     class Definition
-      attr_accessor :title, :slug, :hook, :description, :questions, :result_rules, :theme, :metadata
+      attr_accessor :title, :slug, :hook, :description, :questions, :result_rules, :theme, :metadata, :estimated_time, :show_start_screen, :logo
 
       def initialize(attributes = {})
         @title = attributes[:title]
@@ -12,6 +12,9 @@ module Rails
         @result_rules = attributes[:result_rules] || []
         @theme = Definition.send(:deep_symbolize, attributes[:theme] || {})
         @metadata = attributes[:metadata] || {}
+        @estimated_time = attributes[:estimated_time]
+        @show_start_screen = attributes.key?(:show_start_screen) ? attributes[:show_start_screen] : false
+        @logo = attributes[:logo]
       end
 
       def add_question(question)
@@ -35,7 +38,10 @@ module Rails
           hook: symbolized[:hook],
           description: symbolized[:description],
           theme: symbolized[:theme],
-          metadata: symbolized[:metadata]
+          metadata: symbolized[:metadata],
+          estimated_time: symbolized[:estimated_time],
+          show_start_screen: symbolized[:show_start_screen],
+          logo: symbolized[:logo]
         )
 
         Array(symbolized[:questions]).each do |question_hash|
