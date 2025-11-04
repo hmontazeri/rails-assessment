@@ -89,7 +89,8 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
       result: "Result"
     )
 
-    get "/rails-assessment/lead-test/result/#{saved_response.uuid}"
+    path = Rails::Assessment::Engine.routes.url_helpers.assessment_result_path("lead-test", response_uuid: saved_response.uuid)
+    get path
 
     assert_response :success
     assert_includes response.body, "https://example.com/consultation"
@@ -121,7 +122,8 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
       result: "Result"
     )
 
-    get "/rails-assessment/default-cta-test/result/#{saved_response.uuid}"
+    path = Rails::Assessment::Engine.routes.url_helpers.assessment_result_path("default-cta-test", response_uuid: saved_response.uuid)
+    get path
 
     assert_response :success
     assert_includes response.body, "/rails-assessment/default-cta-test"
