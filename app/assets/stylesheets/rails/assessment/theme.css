@@ -177,10 +177,11 @@
   align-items: center;
   gap: 0.85rem;
   padding: 0.95rem 1.1rem;
-  border: 1px solid var(--assessment-color-neutral-900-alpha-10);
+  border: 2px solid var(--assessment-color-neutral-900-alpha-10);
   border-radius: var(--assessment-radius-sm);
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
+  background: transparent;
 }
 
 .question-option:hover {
@@ -189,7 +190,15 @@
 }
 
 .question-option input {
-  accent-color: var(--assessment-color-primary);
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.question-option:has(input:checked) {
+  background: var(--assessment-color-primary);
+  border-color: var(--assessment-color-primary);
+  color: var(--assessment-color-neutral-50);
 }
 
 .option-label {
@@ -438,7 +447,9 @@
 }
 
 .assessment-content.is-active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
   animation: fadeIn 0.4s ease;
 }
 
