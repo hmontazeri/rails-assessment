@@ -19,6 +19,7 @@ module Rails
 
       initializer "rails_assessment.helpers" do
         ActiveSupport.on_load(:action_view) do
+          include Rails::Assessment::ApplicationHelper
           include Rails::Assessment::Theme::Helpers
         end
       end
