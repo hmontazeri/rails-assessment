@@ -10,7 +10,10 @@ module Rails
       end
 
       initializer "rails_assessment.assets.precompile" do |app|
-        app.config.assets.precompile += %w[rails/assessment/theme.css]
+        app.config.assets.precompile += %w[
+          rails/assessment/theme.css
+          rails/assessment/controllers/assessment_controller.js
+        ]
       end
 
       initializer "rails_assessment.helpers" do
@@ -26,12 +29,12 @@ module Rails
       config.after_initialize do
         Rails::Assessment.load! if Rails::Assessment.configuration.cache_enabled
       end
-    end
-  end
-end
       initializer "rails_assessment.importmap", before: "importmap" do |app|
         next unless app.config.respond_to?(:importmap)
 
         app.config.importmap.paths << root.join("app", "assets", "javascripts")
         app.config.importmap.cache_sweepers << root.join("app", "assets", "javascripts")
       end
+    end
+  end
+end
