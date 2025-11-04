@@ -62,10 +62,8 @@ class NavigationTest < ActionDispatch::IntegrationTest
     assert_select "section.assessment[data-assessment-show-start-screen-value='true']"
     assert_select ".assessment-start-screen.is-active[data-assessment-target='startScreen']"
     assert_select ".assessment-start-screen .btn-start", text: "Start Assessment"
-    assert_select ".assessment-start-info .assessment-start-info-label", text: "Estimated Time"
-    assert_select ".assessment-start-info .assessment-start-info-value", text: "2 minutes"
-    assert_select ".assessment-start-info .assessment-start-info-label", text: "Questions"
-    assert_select ".assessment-start-info .assessment-start-info-value", text: "1"
+    assert_select ".assessment-start-meta .assessment-start-meta-item", text: "2 minutes"
+    assert_select ".assessment-start-meta .assessment-start-meta-item", text: "1 Question"
     assert_select ".assessment-content[data-assessment-target='content']"
     assert_select ".assessment-content.is-active", false
   end
