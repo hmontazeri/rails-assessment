@@ -250,6 +250,11 @@
   box-shadow: 0 12px 30px var(--assessment-color-shadow-btn);
 }
 
+.btn a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .assessment-result {
   background: var(--assessment-color-white);
   border-radius: var(--assessment-radius-lg);
