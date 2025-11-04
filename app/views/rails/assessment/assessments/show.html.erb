@@ -23,32 +23,22 @@
         <p class="assessment-start-description"><%= @definition.description %></p>
       <% end %>
 
-      <% if @definition.estimated_time.present? || @definition.show_question_count %>
-        <div class="assessment-start-info">
-          <% if @definition.estimated_time.present? %>
-            <div class="assessment-start-info-item">
-              <div class="assessment-start-info-content">
-                <span class="assessment-start-info-label">Estimated Time</span>
-                <span class="assessment-start-info-value"><%= @definition.estimated_time %></span>
-              </div>
-            </div>
-          <% end %>
-          <% if @definition.show_question_count %>
-            <div class="assessment-start-info-item">
-              <div class="assessment-start-info-content">
-                <span class="assessment-start-info-label">Questions</span>
-                <span class="assessment-start-info-value"><%= @definition.questions.size %></span>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-
       <button type="button"
               class="btn btn-primary btn-start"
               data-action="assessment#start">
         Start Assessment
       </button>
+
+      <% if @definition.estimated_time.present? || @definition.show_question_count %>
+        <div class="assessment-start-meta">
+          <% if @definition.estimated_time.present? %>
+            <span class="assessment-start-meta-item"><%= @definition.estimated_time %></span>
+          <% end %>
+          <% if @definition.show_question_count %>
+            <span class="assessment-start-meta-item"><%= @definition.questions.size %> <%= @definition.questions.size == 1 ? 'Question' : 'Questions' %></span>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 

@@ -399,47 +399,28 @@
   margin: 0;
 }
 
-.assessment-start-info {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.assessment-start-info-item {
-  display: flex;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  background: var(--assessment-color-neutral-900-alpha-05);
-  border-radius: var(--assessment-radius-sm);
-  border: 1px solid var(--assessment-color-neutral-900-alpha-10);
-}
-
-.assessment-start-info-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  width: 100%;
-}
-
-.assessment-start-info-label {
-  font-size: 0.75rem;
-  color: var(--assessment-color-neutral-900-alpha-60);
-  font-weight: 600;
-}
-
-.assessment-start-info-value {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--assessment-color-neutral-900);
-}
-
 .btn-start {
-  margin-top: 1rem;
   font-size: 1rem;
   padding: 1rem 2rem;
+}
+
+.assessment-start-meta {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.assessment-start-meta-item {
+  font-size: 0.875rem;
+  color: var(--assessment-color-neutral-900-alpha-70);
+}
+
+.assessment-start-meta-item + .assessment-start-meta-item::before {
+  content: "•";
+  margin-right: 1rem;
+  color: var(--assessment-color-neutral-900-alpha-60);
 }
 
 .assessment-content {
