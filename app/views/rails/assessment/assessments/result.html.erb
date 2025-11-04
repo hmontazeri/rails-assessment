@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <%= @definition.title %> – Ergebnis
+  <%= @definition.title %> – <%= t('.page_title') %>
 <% end %>
 
 <% headline = result_payload(@result_rule, :headline, nil) %>

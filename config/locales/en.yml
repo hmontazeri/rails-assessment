@@ -6,6 +6,7 @@ en:
         question_one: "Question"
         question_other: "Questions"
       result:
+        page_title: "Result"
         greeting: "Hello %{name}!"
         default_headline: "Your Result"
         score_label: "Score"
