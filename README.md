@@ -28,10 +28,14 @@
    bin/rails db:migrate
    ```
 4. Create `config/initializers/rails_assessment.rb` (see example below) and drop YAML files into `config/assessments/`.
-5. Import the Stimulus controller so Hotwire can register it (Importmap example):
+5. Pin and import the Stimulus controller so Hotwire can register it (Importmap example):
+   ```ruby
+   # config/importmap.rb
+   pin "rails-assessment/controllers/assessment_controller", to: "rails/assessment/controllers/assessment_controller.js"
+   ```
    ```javascript
    // app/javascript/controllers/index.js
-   import AssessmentController from "rails-assessment/assessment_controller"
+   import AssessmentController from "rails-assessment/controllers/assessment_controller"
    application.register("assessment", AssessmentController)
    ```
 6. Visit `http://localhost:3000/assessments/<slug>` to see the assessment in action.

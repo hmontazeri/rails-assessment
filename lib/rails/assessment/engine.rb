@@ -4,7 +4,7 @@ module Rails
       isolate_namespace Rails::Assessment
 
       initializer "rails_assessment.asset_paths" do |app|
-        app.config.assets.paths << root.join("app", "javascript")
+        app.config.assets.paths << root.join("app", "assets", "javascripts")
         app.config.assets.paths << root.join("app", "assets", "stylesheets")
         app.config.assets.paths << root.join("app", "assets", "images")
       end
@@ -29,3 +29,9 @@ module Rails
     end
   end
 end
+      initializer "rails_assessment.importmap", before: "importmap" do |app|
+        next unless app.config.respond_to?(:importmap)
+
+        app.config.importmap.paths << root.join("app", "assets", "javascripts")
+        app.config.importmap.cache_sweepers << root.join("app", "assets", "javascripts")
+      end
