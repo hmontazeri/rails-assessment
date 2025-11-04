@@ -48,6 +48,12 @@
   gap: 2rem;
 }
 
+.assessment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
 .assessment-header {
   text-align: center;
 }
@@ -105,7 +111,7 @@
 .assessment-question {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .question-text {
@@ -121,14 +127,14 @@
 
 .question-options {
   display: grid;
-  gap: 0.75rem;
+  gap: 1.25rem;
 }
 
 .question-option {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.85rem 1rem;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
   border: 1px solid rgba(15, 23, 42, 0.1);
   border-radius: var(--assessment-radius-sm);
   cursor: pointer;
