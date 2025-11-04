@@ -54,12 +54,25 @@ Rails::Assessment.configure do |config|
   config.theme = {
     colors: {
       primary: "#2563EB",
-      neutral: { 50 => "#F8FAFC", 900 => "#0F172A" }
+      neutral: {
+        50 => "#F9FAFB",
+        900 => "#111827"
+      }
     },
     typography: {
-      font_sans: "'Inter', system-ui, sans-serif",
+      font_sans: "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
       heading: :sans,
       body: :sans
+    },
+    radius: {
+      sm: "0.375rem",
+      lg: "0.75rem"
+    },
+    shadow: {
+      card: "0 10px 30px rgba(15, 23, 42, 0.08)"
+    },
+    dark_mode: {
+      enabled: false
     }
   }
 
@@ -71,9 +84,16 @@ Rails::Assessment.configure do |config|
 end
 ```
 
-- `theme_strategy`: `:initializer`, `:param`, or `:proc`.
-- `assessments_paths`: directories scanned for `.yml` and `.rb` definitions.
-- `fallback_result_text`: used when no rule matches and no fallback is present.
+| Option              | Type              | Default                                                  | Description                                                                                  |
+| ------------------- | ----------------- | -------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `assessments_paths` | Array\<Pathname\> | `[Rails.root.join("config", "assessments")]`             | Directories scanned for `.yml` and `.rb` assessment definitions.                             |
+| `cache_enabled`     | Boolean           | `false` in development, `true` otherwise                 | Toggle reloading of DSL/YAML on each request.                                               |
+| `fallback_result_text` | String        | `"Thanks for completing the assessment."`                | Copy returned when no rule matches and no fallback rule exists.                              |
+| `theme`             | Hash              | See [default theme](lib/rails/assessment/configuration.rb) | Base theme tokens (colors, typography, radius, shadow, dark_mode).                           |
+| `themes`            | Hash              | `{}`                                                     | Named theme overrides addressable by the resolver (e.g., `?theme=forest`).                   |
+| `theme_strategy`    | Symbol            | `:initializer`                                           | How to resolve the active theme: `:initializer`, `:param`, or `:proc`.                       |
+| `theme_param_key`   | Symbol/Array      | `:theme`                                                 | Param key(s) inspected when `theme_strategy` is `:param`.                                    |
+| `theme_proc`        | Proc              | `nil`                                                    | Proc invoked with the current request when `theme_strategy` is `:proc`.                      |
 
 At runtime you can access theme tokens in views with `tkn("colors.primary")` or render flattened CSS variables with `assessment_css_variables`.
 
