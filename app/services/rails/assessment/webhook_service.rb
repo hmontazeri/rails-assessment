@@ -38,6 +38,7 @@ module Rails
       def payload
         {
           response_id: @response.id,
+          response_uuid: @response.uuid,
           assessment_slug: @response.assessment_slug,
           lead: {
             name: @response.answers.dig("lead", "name"),

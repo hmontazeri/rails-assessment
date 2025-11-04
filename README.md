@@ -207,7 +207,7 @@ Each question supports:
 - Clicking start button smoothly transitions to the first question with fade animation.
 - The Stimulus controller manages step transitions, validates required steps, and keeps a progress bar in sync.
 - Submission posts to `/assessments/:slug/response` (local form, Turbo friendly).
-- Successful submissions redirect to `/assessments/:slug/result?response_id=...`.
+- Successful submissions redirect to `/assessments/:slug/result/:response_uuid`.
 - Responses are stored in `Rails::Assessment::Response` with aggregated tags and score helpers.
 
 Without JavaScript the form gracefully falls back to a stacked layout via CSS.
@@ -315,6 +315,7 @@ The webhook receives a JSON POST with:
 ```json
 {
   "response_id": 123,
+  "response_uuid": "2f1b3a0c-6b44-4c6c-8f2c-efa9a917d1d4",
   "assessment_slug": "product-fit",
   "lead": {
     "name": "John Doe",

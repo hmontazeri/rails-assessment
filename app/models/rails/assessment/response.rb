@@ -1,11 +1,16 @@
+require "securerandom"
+
 module Rails
   module Assessment
     class Response < ApplicationRecord
       self.table_name = "rails_assessment_responses"
 
+      before_validation :ensure_uuid, on: :create
+
       store_accessor :answers if respond_to?(:store_accessor)
 
       validates :assessment_slug, presence: true
+      validates :uuid, presence: true, uniqueness: true
 
       scope :for_assessment, ->(slug) { where(assessment_slug: slug.to_s) }
 
@@ -33,6 +38,12 @@ module Rails
             0
           end
         end.to_i
+      end
+
+      private
+
+      def ensure_uuid
+        self.uuid ||= SecureRandom.uuid
       end
     end
   end

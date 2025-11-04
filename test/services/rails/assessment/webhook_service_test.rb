@@ -37,7 +37,7 @@ module Rails
         assert_requested(:post, "https://example.com/webhook")
       end
 
-      test "sends response_id in payload" do
+      test "sends response identifiers in payload" do
         stub_request(:post, "https://example.com/webhook")
           .to_return(status: 200, body: "OK")
 
@@ -46,6 +46,7 @@ module Rails
         assert_requested(:post, "https://example.com/webhook") do |req|
           json = JSON.parse(req.body)
           assert_equal @response.id, json["response_id"]
+          assert_equal @response.uuid, json["response_uuid"]
         end
       end
 

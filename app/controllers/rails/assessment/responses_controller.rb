@@ -40,7 +40,7 @@ module Rails
             WebhookService.post_lead(@response, @definition.webhook_url)
           end
 
-          redirect_to result_assessment_path(@definition.slug, response_id: @response.id)
+          redirect_to result_assessment_path(@definition.slug, response_uuid: @response.uuid)
         else
           flash.now[:alert] = "Bitte füllen Sie alle Pflichtfelder aus."
           @theme = Rails::Assessment::Theme::Resolver.new.resolve(request: request, overrides: @definition.theme)

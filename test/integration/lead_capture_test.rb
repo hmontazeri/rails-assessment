@@ -89,7 +89,7 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
       result: "Result"
     )
 
-    get "/rails-assessment/lead-test/result?response_id=#{saved_response.id}"
+    get "/rails-assessment/lead-test/result/#{saved_response.uuid}"
 
     assert_response :success
     assert_includes response.body, "https://example.com/consultation"
@@ -121,7 +121,7 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
       result: "Result"
     )
 
-    get "/rails-assessment/default-cta-test/result?response_id=#{saved_response.id}"
+    get "/rails-assessment/default-cta-test/result/#{saved_response.uuid}"
 
     assert_response :success
     assert_includes response.body, "/rails-assessment/default-cta-test"

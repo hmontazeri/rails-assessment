@@ -9,7 +9,7 @@ module Rails
       end
 
       def result
-        @response = Response.find_by(id: params[:response_id], assessment_slug: @definition.slug)
+        @response = Response.find_by(uuid: params[:response_uuid], assessment_slug: @definition.slug)
         unless @response
           redirect_to assessment_path(@definition.slug), alert: "Assessment response not found."
           return
@@ -29,7 +29,7 @@ module Rails
       def load_definition
         Rails::Assessment.load! if reload_required?
 
-        @definition = Rails::Assessment.find(params[:slug])
+        @definition = Rails::Assessment.find(params[:assessment_slug] || params[:slug])
         raise ActionController::RoutingError, "Assessment not found" unless @definition
       end
 
