@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     rails-assessment (0.1.0)
-      rails (>= 8.0.3)
+      rails (~> 8.0, >= 8.0.3)
 
 GEM
   remote: https://rubygems.org/
