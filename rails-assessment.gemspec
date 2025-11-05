@@ -3,8 +3,8 @@ require_relative "lib/rails/assessment/version"
 Gem::Specification.new do |spec|
   spec.name        = "rails-assessment"
   spec.version     = Rails::Assessment::VERSION
-  spec.authors     = [ "Hamed Montazeri" ]
-  spec.email       = [ "hamed.mon@gmail.com" ]
+  spec.authors     = [ "Hamed M" ]
+  spec.email       = [ "hamed.mon+gems@gmail.com" ]
   spec.homepage    = "https://github.com/hmontazeri/rails-assessment"
   spec.summary     = "Headless, themable assessment engine for Rails."
   spec.description = "Rails::Assessment is a mountable Rails 8 engine that renders configurable, themeable assessments driven by YAML or Ruby DSL definitions."
