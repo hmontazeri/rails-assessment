@@ -197,4 +197,141 @@ class LeadCaptureTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to engine_path(:assessment_result_path, "lead-test", response_uuid: saved_response.uuid)
   end
+
+  test "score is hidden when score is 0" do
+    Rails::Assessment.registry.reset
+
+    Rails::Assessment.define "zero-score-test" do
+      title "Zero Score Test"
+      hook "Test zero score"
+
+      question "Test Question" do
+        option "No points", tag: :no_points, score: 0
+      end
+
+      result_rule text: "Result", tags: [ :no_points ] do
+        payload(headline: "Zero Score Result")
+      end
+    end
+
+    definition = Rails::Assessment.find("zero-score-test")
+
+    saved_response = Rails::Assessment::Response.create!(
+      assessment_slug: "zero-score-test",
+      answers: {
+        "test_question" => {
+          "option" => { "text" => "No points", "tag" => "no_points", "score" => 0 },
+          "tags" => [ "no_points" ],
+          "score" => 0
+        }
+      },
+      result: "Result"
+    )
+
+    assert_equal 0, saved_response.score
+
+    get engine_path(:assessment_result_path, "zero-score-test", response_uuid: saved_response.uuid)
+
+    assert_response :success
+    # Score circle should not be in the response body
+    assert_not_includes response.body, "result-score-section"
+    assert_not_includes response.body, "result-score-value"
+  end
+
+  test "score is visible when score is greater than 0" do
+    saved_response = Rails::Assessment::Response.create!(
+      assessment_slug: "lead-test",
+      answers: {
+        "test_question" => {
+          "option" => { "text" => "Yes", "tag" => "yes", "score" => 5 },
+          "tags" => [ "yes" ],
+          "score" => 5
+        }
+      },
+      result: "Result"
+    )
+
+    assert_equal 5, saved_response.score
+
+    get engine_path(:assessment_result_path, "lead-test", response_uuid: saved_response.uuid)
+
+    assert_response :success
+    # Score circle should be visible in the response body
+    assert_includes response.body, "result-score-section"
+    assert_includes response.body, "result-score-value"
+  end
+
+  test "email sent message shows only when both user email and notification email are present" do
+    Rails::Assessment.registry.reset
+
+    Rails::Assessment.define "with-notification" do
+      title "With Notification"
+      hook "Test"
+      notification_email "leads@example.com"
+
+      question "Test?" do
+        option "Yes", tag: :yes, score: 1
+      end
+
+      result_rule text: "Result", tags: [ :yes ] do
+        payload(headline: "Result")
+      end
+    end
+
+    Rails::Assessment.define "without-notification" do
+      title "Without Notification"
+      hook "Test"
+
+      question "Test?" do
+        option "Yes", tag: :yes, score: 1
+      end
+
+      result_rule text: "Result", tags: [ :yes ] do
+        payload(headline: "Result")
+      end
+    end
+
+    # Test 1: With notification_email and user email - message should show
+    response_with_notification = Rails::Assessment::Response.create!(
+      assessment_slug: "with-notification",
+      answers: {
+        "test" => { "option" => { "text" => "Yes" }, "tags" => [ "yes" ], "score" => 1 },
+        "lead" => { "email" => "user@example.com" }
+      },
+      result: "Result"
+    )
+
+    get engine_path(:assessment_result_path, "with-notification", response_uuid: response_with_notification.uuid)
+    assert_response :success
+    assert_includes response.body, "user@example.com"
+
+    # Test 2: Without notification_email but with user email - message should NOT show
+    response_without_notification = Rails::Assessment::Response.create!(
+      assessment_slug: "without-notification",
+      answers: {
+        "test" => { "option" => { "text" => "Yes" }, "tags" => [ "yes" ], "score" => 1 },
+        "lead" => { "email" => "user@example.com" }
+      },
+      result: "Result"
+    )
+
+    get engine_path(:assessment_result_path, "without-notification", response_uuid: response_without_notification.uuid)
+    assert_response :success
+    # User email should be captured but the "email sent" message should not show
+    assert_not_includes response.body, "Wir haben dein Ergebnis an"
+
+    # Test 3: With notification_email but without user email - message should NOT show
+    response_no_user_email = Rails::Assessment::Response.create!(
+      assessment_slug: "with-notification",
+      answers: {
+        "test" => { "option" => { "text" => "Yes" }, "tags" => [ "yes" ], "score" => 1 }
+      },
+      result: "Result"
+    )
+
+    get engine_path(:assessment_result_path, "with-notification", response_uuid: response_no_user_email.uuid)
+    assert_response :success
+    # No email sent message should appear
+    assert_not_includes response.body, "Wir haben dein Ergebnis an"
+  end
 end
