@@ -10,7 +10,9 @@ Name: <%= @user_name %>
 Email: <%= @user_email %>
 <% end %>
 Assessment: <%= @assessment_slug %>
+<% if @score.to_i > 0 %>
 Score: <%= @score %>
+<% end %>
 Result: <%= @result %>
 <% if @tags.present? %>
 Tags: <%= @tags %>

@@ -11,7 +11,9 @@
     <li><strong>Email:</strong> <%= @user_email %></li>
   <% end %>
   <li><strong>Assessment:</strong> <%= @assessment_slug %></li>
-  <li><strong>Score:</strong> <%= @score %></li>
+  <% if @score.to_i > 0 %>
+    <li><strong>Score:</strong> <%= @score %></li>
+  <% end %>
   <li><strong>Result:</strong> <%= @result %></li>
   <% if @tags.present? %>
     <li><strong>Tags:</strong> <%= @tags %></li>

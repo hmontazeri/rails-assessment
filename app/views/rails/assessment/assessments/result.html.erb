@@ -22,7 +22,7 @@
     <% end %>
   </header>
 
-  <% if @response&.score.present? %>
+  <% if @response&.score.to_i > 0 %>
     <div class="result-score-section">
       <div class="result-score-circle">
         <svg class="result-score-svg" viewBox="0 0 120 120">
@@ -83,7 +83,7 @@
 
   <footer class="result-footer">
     <%= link_to cta_text, cta_url, class: "btn btn-primary btn-large" %>
-    <% if user_email(@response).present? %>
+    <% if user_email(@response).present? && @definition.notification_email.present? %>
       <p class="result-footer-note"><%= t('rails.assessment.result.email_sent', email: user_email(@response)) %></p>
     <% end %>
   </footer>
