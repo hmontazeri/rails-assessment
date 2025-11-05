@@ -15,9 +15,18 @@
 
 ## Getting Started
 
-1. Add the gem to your host app (or use it as an engines workspace dependency):
+1. Add the gem to your `Gemfile`:
    ```ruby
-   gem "rails-assessment", path: "path/to/rails-assessment"
+   gem "rails-assessment"
+   ```
+   Then run:
+   ```bash
+   bundle install
+   ```
+
+   Or, for development from the git repository:
+   ```ruby
+   gem "rails-assessment", github: "hmontazeri/rails-assessment"
    ```
 2. Mount the engine in `config/routes.rb`:
    ```ruby
