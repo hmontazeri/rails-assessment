@@ -11,6 +11,7 @@
 - **Theme system** — inject CSS tokens per assessment, resolve themes via initializer, params, or request proc.
 - **Dark mode support** — optional dark mode toggle with customizable theme variables.
 - **Start screen** — optional intro screen with description, estimated time, and branding.
+- ⚠️ **Disclaimer** — This project is mostly vibe coded and in active development. Expect breaking changes and rapid iteration.
 
 ## Getting Started
 
@@ -38,10 +39,10 @@
    ```
    ```javascript
    // app/javascript/controllers/index.js
-   import AssessmentController from "rails-assessment/controllers/assessment_controller"
-   import ThemeToggleController from "rails-assessment/controllers/theme_toggle_controller"
-   application.register("assessment", AssessmentController)
-   application.register("assessment-theme-toggle", ThemeToggleController)
+   import AssessmentController from "rails-assessment/controllers/assessment_controller";
+   import ThemeToggleController from "rails-assessment/controllers/theme_toggle_controller";
+   application.register("assessment", AssessmentController);
+   application.register("assessment-theme-toggle", ThemeToggleController);
    ```
 6. Visit `http://localhost:3000/assessments/<slug>` to see the assessment in action.
 
@@ -103,16 +104,16 @@ Rails::Assessment.configure do |config|
 end
 ```
 
-| Option              | Type              | Default                                                  | Description                                                                                  |
-| ------------------- | ----------------- | -------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `assessments_paths` | Array\<Pathname\> | `[Rails.root.join("config", "assessments")]`             | Directories scanned for `.yml` and `.rb` assessment definitions.                             |
-| `cache_enabled`     | Boolean           | `false` in development, `true` otherwise                 | Toggle reloading of DSL/YAML on each request.                                               |
-| `fallback_result_text` | String        | `"Thanks for completing the assessment."`                | Copy returned when no rule matches and no fallback rule exists.                              |
-| `theme`             | Hash              | See [default theme](lib/rails/assessment/configuration.rb) | Base theme tokens (colors, typography, radius, shadow, dark_mode).                           |
-| `themes`            | Hash              | `{}`                                                     | Named theme overrides addressable by the resolver (e.g., `?theme=forest`).                   |
-| `theme_strategy`    | Symbol            | `:initializer`                                           | How to resolve the active theme: `:initializer`, `:param`, or `:proc`.                       |
-| `theme_param_key`   | Symbol/Array      | `:theme`                                                 | Param key(s) inspected when `theme_strategy` is `:param`.                                    |
-| `theme_proc`        | Proc              | `nil`                                                    | Proc invoked with the current request when `theme_strategy` is `:proc`.                      |
+| Option                 | Type              | Default                                                    | Description                                                                |
+| ---------------------- | ----------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `assessments_paths`    | Array\<Pathname\> | `[Rails.root.join("config", "assessments")]`               | Directories scanned for `.yml` and `.rb` assessment definitions.           |
+| `cache_enabled`        | Boolean           | `false` in development, `true` otherwise                   | Toggle reloading of DSL/YAML on each request.                              |
+| `fallback_result_text` | String            | `"Thanks for completing the assessment."`                  | Copy returned when no rule matches and no fallback rule exists.            |
+| `theme`                | Hash              | See [default theme](lib/rails/assessment/configuration.rb) | Base theme tokens (colors, typography, radius, shadow, dark_mode).         |
+| `themes`               | Hash              | `{}`                                                       | Named theme overrides addressable by the resolver (e.g., `?theme=forest`). |
+| `theme_strategy`       | Symbol            | `:initializer`                                             | How to resolve the active theme: `:initializer`, `:param`, or `:proc`.     |
+| `theme_param_key`      | Symbol/Array      | `:theme`                                                   | Param key(s) inspected when `theme_strategy` is `:param`.                  |
+| `theme_proc`           | Proc              | `nil`                                                      | Proc invoked with the current request when `theme_strategy` is `:proc`.    |
 
 At runtime you can access theme tokens in views with `tkn("colors.primary")` or render flattened CSS variables with `assessment_css_variables`.
 
@@ -126,13 +127,13 @@ Create files in `config/assessments/*.yml`:
 title: "Smart Home Check"
 slug: "smart-home-check"
 hook: "Ist Ihr Zuhause bereit für ein Smart Home?"
-description: "Finden Sie in wenigen Fragen heraus, wie gut Ihr Zuhause für Smart-Home-Technologie vorbereitet ist."  # Optional
-show_start_screen: true  # Optional: enables intro screen before first question
-estimated_time: "2-3 Minuten"  # Optional: displayed on start screen
-show_question_count: false  # Optional: set to false to hide question count (default: true)
-logo: "logo.svg"  # Optional: asset path or URL, displays in top right corner
-capture_name: true  # Optional: capture user's name before results
-capture_email: true  # Optional: capture user's email before results
+description: "Finden Sie in wenigen Fragen heraus, wie gut Ihr Zuhause für Smart-Home-Technologie vorbereitet ist." # Optional
+show_start_screen: true # Optional: enables intro screen before first question
+estimated_time: "2-3 Minuten" # Optional: displayed on start screen
+show_question_count: false # Optional: set to false to hide question count (default: true)
+logo: "logo.svg" # Optional: asset path or URL, displays in top right corner
+capture_name: true # Optional: capture user's name before results
+capture_email: true # Optional: capture user's email before results
 questions:
   - text: "Haben Sie WLAN in allen Räumen?"
     options:
@@ -173,27 +174,28 @@ The loader watches these files in development (no caching) and reloads automatic
 
 ### Assessment Options
 
-| Field                | Type    | Required | Description                                                                                     |
-| -------------------- | ------- | -------- | ----------------------------------------------------------------------------------------------- |
-| `title`              | String  | Yes      | The assessment title displayed in the header.                                                   |
-| `slug`               | String  | No       | URL-friendly identifier (auto-generated from title if omitted).                                 |
-| `hook`               | String  | No       | Eyebrow text displayed above the title.                                                         |
-| `description`        | String  | No       | Longer description displayed on the start screen (if enabled).                                  |
-| `show_start_screen`  | Boolean | No       | Enables an intro screen with description, time estimate, and start button. Default: `false`.    |
-| `estimated_time`     | String  | No       | Time estimate displayed on start screen (e.g., "5 minutes", "2-3 Minuten").                     |
-| `show_question_count`| Boolean | No       | Show question count on start screen. Default: `true`.                                           |
-| `logo`               | String  | No       | Asset path (e.g., `"logo.svg"`) or full URL. Displays in top right corner (max 120×60px).       |
-| `capture_name`       | Boolean | No       | Capture user's name before showing results. Default: `false`.                                   |
-| `capture_email`      | Boolean | No       | Capture user's email before showing results. Default: `false`.                                  |
-| `notification_email` | String  | No       | Email address to notify when a lead is captured. Sends lead details and assessment results.     |
-| `webhook_url`        | String  | No       | Webhook URL to POST lead data to when captured. Integrates with Zapier, Make, Notion, etc.     |
-| `questions`          | Array   | Yes      | List of question objects (see below).                                                           |
-| `result_rules`       | Array   | Yes      | Logic rules for determining results.                                                            |
-| `theme`              | Hash    | No       | Per-assessment theme overrides.                                                                 |
+| Field                 | Type    | Required | Description                                                                                  |
+| --------------------- | ------- | -------- | -------------------------------------------------------------------------------------------- |
+| `title`               | String  | Yes      | The assessment title displayed in the header.                                                |
+| `slug`                | String  | No       | URL-friendly identifier (auto-generated from title if omitted).                              |
+| `hook`                | String  | No       | Eyebrow text displayed above the title.                                                      |
+| `description`         | String  | No       | Longer description displayed on the start screen (if enabled).                               |
+| `show_start_screen`   | Boolean | No       | Enables an intro screen with description, time estimate, and start button. Default: `false`. |
+| `estimated_time`      | String  | No       | Time estimate displayed on start screen (e.g., "5 minutes", "2-3 Minuten").                  |
+| `show_question_count` | Boolean | No       | Show question count on start screen. Default: `true`.                                        |
+| `logo`                | String  | No       | Asset path (e.g., `"logo.svg"`) or full URL. Displays in top right corner (max 120×60px).    |
+| `capture_name`        | Boolean | No       | Capture user's name before showing results. Default: `false`.                                |
+| `capture_email`       | Boolean | No       | Capture user's email before showing results. Default: `false`.                               |
+| `notification_email`  | String  | No       | Email address to notify when a lead is captured. Sends lead details and assessment results.  |
+| `webhook_url`         | String  | No       | Webhook URL to POST lead data to when captured. Integrates with Zapier, Make, Notion, etc.   |
+| `questions`           | Array   | Yes      | List of question objects (see below).                                                        |
+| `result_rules`        | Array   | Yes      | Logic rules for determining results.                                                         |
+| `theme`               | Hash    | No       | Per-assessment theme overrides.                                                              |
 
 ### Question Options
 
 Each question supports:
+
 - `text` (required) — The question prompt.
 - `help_text` (optional) — Additional context displayed below the question.
 - `required` (optional) — Whether answer is required. Default: `true`.
@@ -257,11 +259,12 @@ title: "Product Fit Assessment"
 description: "Answer a few quick questions to see if our product is right for you."
 show_start_screen: true
 estimated_time: "3-5 minutes"
-show_question_count: false  # Hide the question count
-logo: "company-logo.svg"  # or "https://example.com/logo.png" for external URLs
+show_question_count: false # Hide the question count
+logo: "company-logo.svg" # or "https://example.com/logo.png" for external URLs
 ```
 
 The start screen displays:
+
 - Your logo in the top right corner (if provided)
 - Assessment title and hook
 - Description text
@@ -276,8 +279,8 @@ Capture user information before showing results to build your email list and per
 
 ```yaml
 title: "Product Fit Assessment"
-capture_name: true   # Show name field before results
-capture_email: true  # Show email field before results
+capture_name: true # Show name field before results
+capture_email: true # Show email field before results
 ```
 
 When enabled, name and/or email fields appear as the final step before submission. The captured data is stored in the response's `answers` hash under the `lead` key and can be accessed in views:
@@ -299,8 +302,8 @@ Automatically notify yourself and external services when leads are captured:
 ```yaml
 title: "Product Fit Assessment"
 capture_email: true
-notification_email: "leads@example.com"  # Send notification when lead captured
-webhook_url: "https://hooks.zapier.com/hooks/catch/..."  # Post lead data to webhook
+notification_email: "leads@example.com" # Send notification when lead captured
+webhook_url: "https://hooks.zapier.com/hooks/catch/..." # Post lead data to webhook
 ```
 
 When a user completes the assessment with an email captured:
@@ -330,6 +333,7 @@ The webhook receives a JSON POST with:
 ```
 
 This allows you to:
+
 - Create Zapier/Make automations to add leads to CRMs
 - POST directly to Notion databases
 - Send data to email marketing platforms
@@ -388,7 +392,7 @@ result_rules:
         - title: "Video: Mental Preparation"
           url: "https://example.com/mental-prep-video"
       cta_text: "Get Your Personalized Training Plan"
-      cta_url: "https://calendly.com/coaching/session"  # Custom CTA button destination
+      cta_url: "https://calendly.com/coaching/session" # Custom CTA button destination
 ```
 
 ### Built-in Result Page Sections
@@ -403,6 +407,7 @@ The enhanced result page automatically displays:
 6. **Personalized Insights**: From `payload.insights` array - highlighted with checkmarks
 7. **Educational Content**: From `payload.educational_content` array - actionable recommendations
 8. **Custom CTA**: From `payload.cta_text` - converts better than generic "restart"
+
 - **CTA Destination**: From `payload.cta_url` - redirect button to custom URL (Calendly, contact form, etc.)
 - **Default**: If `cta_url` not provided, button defaults to restarting the assessment
 - When a custom `cta_url` is supplied, the engine automatically appends `response_uuid` so downstream destinations can correlate results (e.g. `https://calendly.com/acme/demo?response_uuid=...`).
