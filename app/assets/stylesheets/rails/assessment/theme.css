@@ -111,6 +111,7 @@
 .assessment-title {
   font-size: 2rem;
   margin: 0;
+  line-height: 1.4;
 }
 
 .assessment-progress {
@@ -159,12 +160,14 @@
 .question-text {
   font-size: 1.25rem;
   margin: 0;
+  line-height: 1.5;
 }
 
 .question-help {
   margin: 0;
   color: var(--assessment-color-neutral-900-alpha-70);
   font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 .question-options {
@@ -281,7 +284,7 @@
 .result-title {
   margin: 0;
   font-size: 2rem;
-  line-height: 1.2;
+  line-height: 1.4;
 }
 
 .result-subtitle {
@@ -583,7 +586,7 @@
 
 .assessment-start-description {
   font-size: 1.05rem;
-  line-height: 1.6;
+  line-height: 1.8;
   color: var(--assessment-color-neutral-900-alpha-70);
   margin: 0;
 }
