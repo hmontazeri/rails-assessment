@@ -13,6 +13,14 @@
 - **Start screen** — optional intro screen with description, estimated time, and branding.
 - ⚠️ **Disclaimer** — This project is mostly vibe coded and in active development. Expect breaking changes and rapid iteration.
 
+## Screenshots
+
+### Start Screen
+![Assessment start screen with dark mode](./assessment-example-01.png)
+
+### Question Page
+![Assessment question page with light mode](./assessment-example-02.png)
+
 ## Getting Started
 
 1. Add the gem to your `Gemfile`:
