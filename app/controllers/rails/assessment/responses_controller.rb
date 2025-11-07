@@ -70,7 +70,7 @@ module Rails
       end
 
       def lead_params
-        params.fetch(:lead, {}).permit(:name, :email)
+        params.fetch(:lead, {}).permit(:name, :email, :notes)
       end
 
       def reload_required?

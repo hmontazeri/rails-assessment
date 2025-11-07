@@ -7,6 +7,7 @@ estimated_time: "2-3 Minuten"
 show_question_count: true
 capture_email: true  # Optional: capture user's email as last step
 capture_name: true   # Optional: capture user's name as last step
+capture_notes: true  # Optional: capture user's notes/additional information as last step
 notification_email: "leads@example.com"  # Optional: email address to receive lead notifications
 webhook_url: "https://hooks.zapier.com/hooks/catch/..."  # Optional: webhook URL to post lead data to
 # logo: "logo.svg"
