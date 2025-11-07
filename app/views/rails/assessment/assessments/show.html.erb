@@ -78,7 +78,7 @@
         </turbo-frame>
       <% end %>
 
-      <% if @definition.capture_name || @definition.capture_email %>
+      <% if @definition.capture_name || @definition.capture_email || @definition.capture_notes %>
         <div class="assessment-step assessment-lead-capture"
              data-assessment-target="step"
              data-step-index="<%= @definition.questions.size %>"
@@ -111,6 +111,17 @@
                          placeholder="max@beispiel.de"
                          required
                          data-action="input->assessment#markAnswered" />
+                </div>
+              <% end %>
+
+              <% if @definition.capture_notes %>
+                <div class="lead-capture-field">
+                  <label for="lead_notes" class="lead-capture-label"><%= t('rails.assessment.form.notes_label') %></label>
+                  <textarea id="lead_notes"
+                            name="lead[notes]"
+                            class="lead-capture-input lead-capture-textarea"
+                            rows="4"
+                            data-action="input->assessment#markAnswered"></textarea>
                 </div>
               <% end %>
             </div>

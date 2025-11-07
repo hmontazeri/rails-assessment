@@ -666,6 +666,13 @@
   color: var(--assessment-color-neutral-900-alpha-60);
 }
 
+.lead-capture-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: var(--assessment-font-sans);
+  line-height: 1.5;
+}
+
 .assessment-logo {
   position: fixed;
   top: 1.5rem;

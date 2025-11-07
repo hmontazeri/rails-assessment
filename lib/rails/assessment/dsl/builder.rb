@@ -68,6 +68,10 @@ module Rails
           definition.capture_name = value
         end
 
+        def capture_notes(value = true)
+          definition.capture_notes = value
+        end
+
         def question(text = nil, id: nil, multi_select: false, required: true, help_text: nil, **opts, &block)
           question = Rails::Assessment::Question.new(
             id: id || Rails::Assessment::Definition.parameterize(text),

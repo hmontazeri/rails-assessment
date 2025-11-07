@@ -18,6 +18,7 @@ de:
       form:
         name_label: "Dein Name"
         email_label: "Deine E-Mail"
+        notes_label: "Gibt es noch etwas, das du mir mitteilen möchtest?"
         almost_done: "Fast geschafft! Um dein persönliches Ergebnis zu erhalten:"
       navigation:
         back: "Zurück"
